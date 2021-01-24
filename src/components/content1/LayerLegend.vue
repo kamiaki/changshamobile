@@ -1,11 +1,9 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <div>图例</div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'LayerLegend'
 }
 </script>

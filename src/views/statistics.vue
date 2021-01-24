@@ -1,11 +1,9 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <h2>数据统计</h2>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'statistics'
 }
 </script>
