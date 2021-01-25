@@ -7,13 +7,19 @@
         trigger="click"
       >
         <van-cell
-          v-for="item in layer.list"
+          v-for="(item, itemIndex) in layer.list"
           :key="item[0]"
           center
           :title="item[0]"
         >
           <template #right-icon>
-            <van-switch v-model="item[1]" size="18" class="ml-1" />
+            <van-switch
+              v-model="item[1]"
+              size="18"
+              class="ml-1"
+              @input="watchTileLayer(index, item, itemIndex)"
+              :disabled="item[2] && item[2] === 'disabled'"
+            />
           </template>
         </van-cell>
         <template #reference>
@@ -36,6 +42,15 @@
 <script>
 export default {
   name: 'LayerControl',
+  props: {
+    switches: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  created () {},
   data () {
     return {
       layerList: [
@@ -44,12 +59,12 @@ export default {
           title: '地图瓦片',
           showPopover: false,
           list: [
-            ['地形图', false],
-            ['街道图', false],
-            ['影像图', true],
-            ['影像标注', false],
-            ['地形标注', false],
-            ['矢量标注', false]
+            ['地形图', false, 1],
+            ['街道图', false, 2],
+            ['影像图', true, 3],
+            ['影像标注', false, 4],
+            ['地形标注', false, 5],
+            ['矢量标注', false, 6]
           ]
         },
         {
@@ -57,42 +72,61 @@ export default {
           title: '设备状态',
           showPopover: false,
           list: [
-            ['雷达', true],
-            ['电场', false],
-            ['闪电', false]
+            ['雷达', this.switches.switch2_1],
+            ['电场', this.switches.switch2_2],
+            ['闪电', this.switches.switch2_3]
           ]
         },
         {
           icon: require('@/assets/img/layerControl/fs.png'),
           title: '组合反射',
           showPopover: false,
-          list: [['组合反射率拼图', false]]
+          list: [['组合反射率拼图', this.switches.switch3_1]]
         },
         {
           icon: require('@/assets/img/layerControl/ld.png'),
           title: '雷电',
           showPopover: false,
           list: [
-            ['散点', true],
-            ['密度', true],
-            ['强度', false],
-            ['聚类', false]
+            ['散点', this.switches.switch4_1],
+            ['密度', this.switches.switch4_2, 'disabled'],
+            ['强度', this.switches.switch4_3, 'disabled'],
+            ['聚类', this.switches.switch4_4, 'disabled']
           ]
         },
         {
           icon: require('@/assets/img/layerControl/dc.png'),
           title: '电场',
           showPopover: false,
-          list: [
-            ['色斑图', false],
-            ['曲线', false]
-          ]
+          list: [['色斑图', this.switches.switch5_1]]
         }
       ],
       statistics: {
         icon: require('@/assets/img/layerControl/tj.png'),
         title: '统计'
       }
+    }
+  },
+  methods: {
+    // layer图层控制
+    watchTileLayer (index, item, itemIndex) {
+      index === 0 && this.changeLayer1(item[2])
+      index !== 0 && this.changeLayer(index, itemIndex)
+      setTimeout(() => (this.layerList[index].showPopover = false), 300)
+    },
+    // 地图瓦片切换
+    changeLayer1 (number) {
+      this.layerList[0].list.map((item) => {
+        item[1] = item[2] === number
+        return item
+      })
+      this.$emit('watchTileLayer', number)
+    },
+    // 设备状态、组合反射、雷电、电场切换
+    changeLayer (index, itemIndex) {
+      index++
+      itemIndex++
+      this.$store.dispatch('vuexContent1/switchesAction', [index, itemIndex])
     }
   }
 }

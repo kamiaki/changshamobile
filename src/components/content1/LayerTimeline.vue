@@ -1,9 +1,9 @@
 <template>
   <div class="fixed-bottom cs-layer-timeline">
     <div class="flex justify-center align-center mt-1 timeline-control">
-      <van-image width="24" height="24" v-if="isplay" :src="playIcon" />
-      <van-image width="24" height="24" v-if="!isplay" :src="stopIcon" />
-      <van-image width="24" height="24" class="ml-h" :src="resetIcon" />
+      <van-image width="22" height="22" v-if="isplay" :src="playIcon" />
+      <van-image width="22" height="22" v-if="!isplay" :src="stopIcon" />
+      <van-image width="22" height="22" class="ml-h" :src="resetIcon" />
       <div class="ml-5 mr-5 position-relative bg-white font-small timeline-bar">
         <div class="position-absolute timeSta">08:48</div>
         <div class="position-absolute bar" style="left: 20px">

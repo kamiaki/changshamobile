@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from '@/store'
+import store from '@/store/index'
 
 // 全局导入基本样式库
 import '@/assets/css/base.css'

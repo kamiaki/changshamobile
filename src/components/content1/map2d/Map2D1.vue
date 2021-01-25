@@ -8,7 +8,10 @@
       :options="options"
     />
     <!-- 图层控制 -->
-    <LayerControl />
+    <LayerControl
+      @watchTileLayer="watchTileLayer"
+      :switches="$store.state.vuexContent1.switches"
+    />
     <!-- 时间轴 -->
     <LayerTimeline />
   </div>
@@ -22,27 +25,31 @@ import { randomFlow } from 'aki_js_utils'
 import LayerControl from '../LayerControl'
 import LayerTimeline from '../LayerTimeline'
 
-const stepKeyInitValue = 1 // 测试图片初始值
 export default {
   name: 'Map2D1',
   components: { LMap, LayerControl, LayerTimeline },
   data () {
     return {
       // 地图
-      stepKey: stepKeyInitValue,
+      stepKey: 1,
       options: { zoomControl: false },
       leafletMap: undefined,
       leafletTileLayer: undefined,
       // 图层
-      layer2_1: undefined, // 设备雷达
-      layer2_2: undefined, // 设备电场
-      layer2_3: undefined, // 设备闪电
-      layer3_1: undefined, // 组合反射率拼图
-      layer4_1: undefined, // 雷电散点
-      layer4_2: undefined, // 雷电密度
-      layer4_3: undefined, // 雷电强度
-      layer4_4: undefined, // 雷电聚类
-      layer5_1: undefined // 电场色斑图
+      layer2_1: undefined, // 设备雷达---散点   √
+      layer2_2: undefined, // 设备电场---散点   √
+      layer2_3: undefined, // 设备闪电---散点   √
+      layer3_1: undefined, // 组合反射率拼图---贴色斑图   √
+      layer4_1: undefined, // 雷电散点---散点(正闪“+”负闪“-”云闪“·”)   √
+      layer4_2: undefined, // 雷电密度---贴色斑图---!!!暂时不做
+      layer4_3: undefined, // 雷电强度---贴色斑图---!!!暂时不做
+      layer4_4: undefined, // 雷电聚类---聚类---!!!暂时不做
+      layer5_1: undefined, // 电场色斑图---贴色斑图
+      // 时间轴
+      startTime: '', // 开始时间
+      curTime: '', // 当前时间
+      endTime: '', // 结束时间
+      timeStep: '' // 时间间隔
     }
   },
   computed: {
@@ -59,6 +66,10 @@ export default {
     }
   },
   methods: {
+    // 监控地图瓦片
+    watchTileLayer (number) {
+      this.leafletTileLayer.setUrl(getTilesUrl(parseInt(number)))
+    },
     // 地图标记点图标
     getIcon (type) {
       let url
@@ -74,6 +85,15 @@ export default {
           break
         case 'leidiansandian':
           url = require('@/assets/img/mapMark/leidiansandian/leidiansandian.png')
+          break
+        case 'leidian_zs':
+          url = require('@/assets/img/mapMark/leidian/zs.png')
+          break
+        case 'leidian_fs':
+          url = require('@/assets/img/mapMark/leidian/fs.png')
+          break
+        case 'leidian_ys':
+          url = require('@/assets/img/mapMark/leidian/ys.png')
           break
         default:
           url = require('@/assets/img/mapMark/leidiansandian/leidiansandian.png')
@@ -168,19 +188,43 @@ export default {
         this.layer2_3.addLayer(maker)
       }
       map.addLayer(this.layer2_3)
-      // ////////////////////////////////////////////////雷电
+      // 组合反射率拼图
+      this.layer3_1 = L.imageOverlay(
+        require('@/assets/timeline/layer1/1.png'),
+        [
+          [29.806257, 109.335938],
+          [24.663183, 114.279785]
+        ]
+      )
+      map.addLayer(this.layer3_1)
+      // 雷电散点
       this.layer4_1 = L.layerGroup()
-      map.addLayer(this.layer4_1)
-      this.layer4_2 = L.imageOverlay('', [
-        [0, 0],
-        [0, 0]
-      ])
-      map.addLayer(this.layer4_2)
-      this.layer4_3 = L.imageOverlay('', [
-        [0, 0],
-        [0, 0]
-      ])
-      map.addLayer(this.layer4_3)
+      for (let i = 0; i < 10; i++) {
+        const y = randomFlow(26.663183, 29.806257, 2)
+        const x = randomFlow(110.335938, 113.279785, 2)
+        const iconArr = ['zs', 'fs', 'ys']
+        const iconIndex = Math.floor(Math.random() * 3)
+        const maker = L.marker([y, x], {
+          icon: this.getIcon(`leidian_${iconArr[iconIndex]}`)
+        })
+        maker.on('click', function (e) {
+          maker
+            .bindPopup(
+              '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
+            )
+            .openPopup()
+        })
+        this.layer4_1.addLayer(maker)
+      }
+      // 电场色斑图
+      this.layer5_1 = L.imageOverlay(
+        require('@/assets/timeline/layer1/1.png'),
+        [
+          [29.806257, 109.335938],
+          [24.663183, 114.279785]
+        ]
+      )
+      map.addLayer(this.layer5_1)
       // //////////////////////////////////////////加载数据
       this.showProduct()
       this.setProduct('', true)
@@ -203,24 +247,24 @@ export default {
       } else {
         this.layer2_3.remove()
       }
+      // 组合反射率拼图
+      if (this.switches.switch3_1) {
+        this.layer3_1.addTo(this.leafletMap)
+      } else {
+        this.layer3_1.remove()
+      }
       // 雷电
       if (this.switches.switch4_1) {
         this.layer4_1.addTo(this.leafletMap)
       } else {
         this.layer4_1.remove()
       }
-      if (this.switches.switch4_2) {
-        this.layer4_2.addTo(this.leafletMap)
+      // 电场色斑图
+      if (this.switches.switch5_1) {
+        this.layer5_1.addTo(this.leafletMap)
       } else {
-        this.layer4_2.remove()
+        this.layer5_1.remove()
       }
-      if (this.switches.switch4_3) {
-        this.layer4_3.addTo(this.leafletMap)
-      } else {
-        this.layer4_3.remove()
-      }
-      // 电场
-      this.layer5_2 = this.switches.switch5_2
     },
     // 设置贴图 init 是否初始化
     setProduct (time, init) {
@@ -234,54 +278,30 @@ export default {
       if (this.switches.switch2_3 || init) {
         // 在这里改变 设备状态
       }
+
+      // /////////////////////////////////////////////组合反射率拼图
+      if (this.switches.switch3_1 || init) {
+        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
+        this.layer3_1.setBounds([
+          [29.806257, 109.335938],
+          [24.663183, 114.279785]
+        ])
+        this.layer3_1.setUrl(require('@/assets/timeline/layer1/2.png'))
+      }
+
       // /////////////////////////////////////////////雷电
       if (this.switches.switch4_1 || init) {
-        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
-        this.layer4_1.clearLayers()
-        for (let i = 0; i < 50; i++) {
-          const y = randomFlow(26.663183, 29.806257, 2)
-          const x = randomFlow(110.335938, 113.279785, 2)
-          const maker = L.marker([y, x], {
-            icon: this.getIcon('leidiansandian')
-          })
-          maker.on('click', function (e) {
-            maker
-              .bindPopup(
-                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
-              )
-              .openPopup()
-          })
-          this.layer4_1.addLayer(maker)
-        }
+        // 在这里改变 雷电散点
       }
-      if (this.switches.switch4_2 || init) {
-        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
-        this.layer4_2.setBounds([
-          [29.806257, 109.335938],
-          [24.663183, 114.279785]
-        ])
-        this.layer4_2.setUrl(
-          require('@/assets/timeline/layer1/' + this.stepKey + '.png')
-        )
-        if (++this.stepKey > 11) this.stepKey = stepKeyInitValue
-      }
-      if (this.switches.switch4_3 || init) {
-        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
-        const name = randomFlow(1, 4, 0)
-        this.layer4_3.setBounds([
-          [29.806257, 109.335938],
-          [24.663183, 114.279785]
-        ])
-        this.layer4_3.setUrl(require('@/assets/carouselImg/' + name + '.png'))
-      }
+
       // ////////////////// 电场
-      if (this.switches.switch5_2 || init) {
-        const datas = []
-        for (let i = 1; i <= 24; i++) {
-          const obj = { 日期: String(i), 电场: randomFlow(20, 100, 0) }
-          datas.push(obj)
-        }
-        this.rowDatas = datas
+      if (this.switches.switch5_1 || init) {
+        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
+        this.layer5_1.setBounds([
+          [29.806257, 109.335938],
+          [24.663183, 114.279785]
+        ])
+        this.layer5_1.setUrl(require('@/assets/timeline/layer1/2.png'))
       }
     }
   }

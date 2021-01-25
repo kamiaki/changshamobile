@@ -54,6 +54,7 @@ export default {
     .cs-button {
       padding: 0 15px;
       border: 0;
+      border-radius: 0;
     }
   }
 }

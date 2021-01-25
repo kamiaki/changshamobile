@@ -14,24 +14,24 @@ const routes = [
       {
         path: 'content1',
         name: '综合监测',
-        component: () => import('../views/content1.vue')
+        component: () => import('@/views/content1.vue')
       },
       {
         path: 'content2',
         name: '雷达预警',
-        component: () => import('../views/content2.vue')
+        component: () => import('@/views/content2.vue')
       },
       {
         path: 'content3',
         name: '专项服务',
-        component: () => import('../views/content3.vue')
+        component: () => import('@/views/content3.vue')
       }
     ]
   },
   {
-    path: 'statistics',
+    path: '/statistics',
     name: '统计',
-    component: () => import('../views/statistics.vue')
+    component: () => import('@/views/statistics.vue')
   }
 ]
 
