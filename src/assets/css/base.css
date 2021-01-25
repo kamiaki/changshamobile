@@ -40,13 +40,7 @@ textarea{resize:none;}
     display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
+/* leaflet图标去掉白背景 */
+.leaflet-container .leaflet-control-attribution{
+  background: none!important;
+}
