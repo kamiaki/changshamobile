@@ -203,7 +203,7 @@ export default {
         const y = randomFlow(26.663183, 29.806257, 2)
         const x = randomFlow(110.335938, 113.279785, 2)
         const iconArr = ['zs', 'fs', 'ys']
-        const iconIndex = Math.floor(Math.random() * 3)
+        const iconIndex = randomFlow(0, 2, 0)
         const maker = L.marker([y, x], {
           icon: this.getIcon(`leidian_${iconArr[iconIndex]}`)
         })
