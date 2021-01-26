@@ -14,6 +14,8 @@
     />
     <!-- 时间轴 -->
     <LayerTimeline @getCurTime="getCurTime" />
+    <!-- 图例 -->
+    <LayerLegend />
   </div>
 </template>
 
@@ -24,10 +26,11 @@ import { getTilesUrl } from '@/utils/leafletUtils'
 import { randomFlow } from 'aki_js_utils'
 import LayerControl from '../LayerControl'
 import LayerTimeline from '../LayerTimeline'
+import LayerLegend from '../LayerLegend'
 
 export default {
   name: 'Map2D1',
-  components: { LMap, LayerControl, LayerTimeline },
+  components: { LMap, LayerControl, LayerTimeline, LayerLegend },
   data () {
     return {
       // 地图

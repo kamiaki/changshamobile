@@ -65,6 +65,7 @@ export default {
 <style lang="scss" scoped>
 .cs-tabbar {
   background: #222222;
+  z-index: 9999;
 }
 .cs-tabbar-item-active {
   background: #222222;

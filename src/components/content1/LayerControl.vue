@@ -24,7 +24,7 @@
         </van-cell>
         <template #reference>
           <van-button type="default" size="small" class="cs-button cs-button2">
-            <van-image width="24" height="24" :src="layer.icon" />
+            <van-image width="20" height="20" :src="layer.icon" />
             <p>{{ layer.title }}</p>
           </van-button>
         </template>
@@ -32,7 +32,7 @@
     </van-row>
     <van-row class="mt-1">
       <van-button type="info" size="small" class="cs-button" to="/statistics">
-        <van-image width="24" height="24" :src="statistics.icon" />
+        <van-image width="20" height="20" :src="statistics.icon" />
         <p>{{ statistics.title }}</p>
       </van-button>
     </van-row>
@@ -50,7 +50,7 @@ export default {
       }
     }
   },
-  created () {},
+  created () { },
   data () {
     return {
       layerList: [
@@ -138,8 +138,8 @@ export default {
   top: 20%;
   height: 500px;
   .cs-button {
-    padding: 8px 2px;
-    width: 60px;
+    padding: 8px 0;
+    width: 56px;
     height: auto;
   }
   .cs-button2 {

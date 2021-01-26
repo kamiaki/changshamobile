@@ -50,7 +50,7 @@ export default {
   height: calc(100vh - 50px);
   .cs-control-btns {
     left: 10px;
-    top: 20px;
+    top: 10px;
     .cs-button {
       padding: 0 15px;
       border: 0;
