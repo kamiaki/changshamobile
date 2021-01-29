@@ -40,7 +40,7 @@ export default {
   name: 'Content1',
   data () {
     return {
-      showMap2D: false
+      showMap2D: true
     }
   },
   components: { Map2D1, Map3D1 }
