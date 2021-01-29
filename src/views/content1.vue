@@ -4,8 +4,8 @@
     <!------------------------------------------------------>
     <div>
       <!--地图-->
-      <Map2D1></Map2D1>
-      <!-- <Map3D1 v-show="!showMap2D"></Map3D1> -->
+      <Map2D1 v-if="showMap2D"></Map2D1>
+      <Map3D1 v-else></Map3D1>
       <!--地图切换按钮-->
       <div class="fixed-top cs-control-btns">
         <van-button
@@ -34,15 +34,16 @@
 </template>
 <script>
 import Map2D1 from '@/components/content1/map2d/Map2D1'
+import Map3D1 from '@/components/content1/map3d/Map3D1'
 
 export default {
-  name: 'Content2',
+  name: 'Content1',
   data () {
     return {
-      showMap2D: true
+      showMap2D: false
     }
   },
-  components: { Map2D1 }
+  components: { Map2D1, Map3D1 }
 }
 </script>
 <style lang="scss" scoped>

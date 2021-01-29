@@ -1,6 +1,8 @@
 <template>
   <div class="layout">
-    <router-view />
+    <keep-alive include="Content1">
+      <router-view />
+    </keep-alive>
     <van-tabbar
       class="cs-tabbar"
       v-model="active"
@@ -66,6 +68,9 @@ export default {
 .cs-tabbar {
   background: #222222;
   z-index: 9999;
+}
+.cs-tabbar::after {
+  border-width: 0;
 }
 .cs-tabbar-item-active {
   background: #222222;

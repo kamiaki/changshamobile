@@ -27,9 +27,11 @@ import { randomFlow } from 'aki_js_utils'
 import LayerControl from '../LayerControl'
 import LayerTimeline from '../LayerTimeline'
 import LayerLegend from '../LayerLegend'
+import mixin from '../mixin'
 
 export default {
   name: 'Map2D1',
+  mixins: [mixin],
   components: { LMap, LayerControl, LayerTimeline, LayerLegend },
   data () {
     return {
@@ -38,6 +40,7 @@ export default {
       options: { zoomControl: false },
       leafletMap: undefined,
       leafletTileLayer: undefined,
+      rectangle: [[30.129666, 108.796621], [24.64278, 114.266381]],
       // 图层
       layer2_1: L.layerGroup(), // 设备雷达---散点   √
       layer2_2: L.layerGroup(), // 设备电场---散点   √
@@ -83,33 +86,7 @@ export default {
     },
     // 地图标记点图标
     getIcon (type) {
-      let url
-      switch (type) {
-        case 'leida':
-          url = require('@/assets/img/mapMark/leida/leida.png')
-          break
-        case 'dianchang':
-          url = require('@/assets/img/mapMark/dianchang/dianchang.gif')
-          break
-        case 'shandian':
-          url = require('@/assets/img/mapMark/shandian/shandian.png')
-          break
-        case 'leidiansandian':
-          url = require('@/assets/img/mapMark/leidiansandian/leidiansandian.png')
-          break
-        case 'leidian_zs':
-          url = require('@/assets/img/mapMark/leidian/zs.png')
-          break
-        case 'leidian_fs':
-          url = require('@/assets/img/mapMark/leidian/fs.png')
-          break
-        case 'leidian_ys':
-          url = require('@/assets/img/mapMark/leidian/ys.png')
-          break
-        default:
-          url = require('@/assets/img/mapMark/leidiansandian/leidiansandian.png')
-          break
-      }
+      const url = this.getIconUrl(type)
       // marker 自定义图标
       const Icon = L.icon({
         iconUrl: url,
@@ -130,7 +107,7 @@ export default {
       this.leafletTileLayer = L.tileLayer(getTilesUrl(3), { maxZoom: 18 })
       map.addLayer(this.leafletTileLayer)
       // 设置镜头
-      map.setView([27.186633, 111.934952], 7)
+      map.setView([27.186633, 111.934952], 6)
       // 地图点击
       map.on('click', function (e) {
         mypop
@@ -213,7 +190,7 @@ export default {
       if (this.switches.switch3_1 || init) {
         // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
         const name = randomFlow(1, 11, 0)
-        this.layer3_1.setBounds([[29.806257, 109.335938], [24.663183, 114.279785]])
+        this.layer3_1.setBounds(this.rectangle)
         this.layer3_1.setUrl(require('@/assets/timeline/layer1/' + name + '.png'))
       }
       // /////////////////////////////////////////////雷电
@@ -225,7 +202,7 @@ export default {
       // /////////////////////////////////////////////电场
       if (this.switches.switch5_1 || init) {
         const name = randomFlow(1, 4, 0)
-        this.layer5_1.setBounds([[29.806257, 109.335938], [24.663183, 114.279785]])
+        this.layer5_1.setBounds(this.rectangle)
         this.layer5_1.setUrl(require('@/assets/carouselImg/' + name + '.png'))
       }
     },

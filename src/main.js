@@ -8,6 +8,8 @@ import '@/assets/css/base.css'
 // 全局导入自定义样式库
 import '@/assets/css/free.css'
 
+import VueCesium from 'vue-cesium'
+
 // rem h5适配
 import 'amfe-flexible/index.js'
 
@@ -17,6 +19,9 @@ import 'vant/lib/index.css'
 
 // 引入2d地图样式库
 import 'leaflet/dist/leaflet.css'
+Vue.use(VueCesium, {
+  cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
+})
 Vue.use(Vant)
 
 Vue.config.productionTip = false

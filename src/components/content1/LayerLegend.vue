@@ -1,6 +1,6 @@
 <template>
   <div class="fixed-bottom flex flex-nowrap align-end cs-layer-legend">
-    <div v-for="item in legendList" :key="item.title">
+    <div class="mr-1" v-for="item in legendList" :key="item.title">
       <van-list v-if="switches[item.switch]">
         <van-cell class="cs-cell text-center" :title="item.title" />
         <van-cell class="cs-cell text-center" :title="item.unit" />
@@ -96,9 +96,9 @@ export default {
   left: 10px;
   right: auto;
   bottom: 115px;
+  transform: scale(0.8);
+  transform-origin: left bottom;
   .van-list {
-    transform: scale(0.8);
-    transform-origin: left bottom;
     .van-cell::after {
       display: none;
     }

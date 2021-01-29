@@ -48,24 +48,34 @@ export default {
       default () {
         return {}
       }
+    },
+    is2d: {
+      type: Boolean,
+      default: true
     }
   },
   created () { },
   data () {
+    const tiles2d = [
+      ['地形图', false, 1],
+      ['街道图', false, 2],
+      ['影像图', true, 3],
+      ['影像标注', false, 4],
+      ['地形标注', false, 5],
+      ['矢量标注', false, 6]
+    ]
+    const tiles3d = [
+      ['影像地图', true, 'img_c'],
+      ['矢量地图', false, 'vec_c'],
+      ['地形晕渲', false, 'ter_c']
+    ]
     return {
       layerList: [
         {
           icon: require('@/assets/img/layerControl/wp.png'),
           title: '地图瓦片',
           showPopover: false,
-          list: [
-            ['地形图', false, 1],
-            ['街道图', false, 2],
-            ['影像图', true, 3],
-            ['影像标注', false, 4],
-            ['地形标注', false, 5],
-            ['矢量标注', false, 6]
-          ]
+          list: this.is2d ? tiles2d : tiles3d
         },
         {
           icon: require('@/assets/img/layerControl/zt.png'),
@@ -115,12 +125,12 @@ export default {
       setTimeout(() => (this.layerList[index].showPopover = false), 300)
     },
     // 地图瓦片切换
-    changeLayer1 (number) {
+    changeLayer1 (val) {
       this.layerList[0].list.map((item) => {
-        item[1] = item[2] === number
+        item[1] = item[2] === val
         return item
       })
-      this.$emit('watchTileLayer', number)
+      this.$emit('watchTileLayer', val)
     },
     // 设备状态、组合反射、雷电、电场切换
     changeLayer (index, itemIndex) {
