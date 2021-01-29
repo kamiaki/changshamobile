@@ -1,34 +1,28 @@
 <template>
   <div class="cs-content1-warp">
-    <!------------------------------------------------------>
-    <!------------------------------------------------------>
-    <div>
-      <!--地图-->
-      <Map2D1 v-if="showMap2D"></Map2D1>
-      <Map3D1 v-else></Map3D1>
-      <!--地图切换按钮-->
-      <div class="fixed-top cs-control-btns">
-        <van-button
-          type="info"
-          size="small"
-          class="cs-button"
-          :plain="!showMap2D"
-          @click="showMap2D = !showMap2D"
-        >
-          地图
-        </van-button>
-        <van-button
-          type="info"
-          size="small"
-          :plain="showMap2D"
-          class="cs-button"
-          @click="showMap2D = !showMap2D"
-        >
-          三维
-        </van-button>
-      </div>
-      <!------------------------------------------------------>
-      <!------------------------------------------------------>
+    <!--地图-->
+    <Map2D1 v-if="showMap2D"></Map2D1>
+    <Map3D1 v-else></Map3D1>
+    <!--地图切换按钮-->
+    <div class="fixed-top cs-control-btns">
+      <van-button
+        type="info"
+        size="small"
+        class="cs-button"
+        :plain="!showMap2D"
+        @click="showMap2D = !showMap2D"
+      >
+        地图
+      </van-button>
+      <van-button
+        type="info"
+        size="small"
+        :plain="showMap2D"
+        class="cs-button"
+        @click="showMap2D = !showMap2D"
+      >
+        三维
+      </van-button>
     </div>
   </div>
 </template>
