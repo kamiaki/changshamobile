@@ -5,8 +5,9 @@ import store from '@/store/index'
 
 // 全局导入基本样式库
 import '@/assets/css/base.css'
-// 全局导入自定义样式库
 import '@/assets/css/free.css'
+// 全局导入自定义样式库
+import '@/assets/css/main.css'
 
 import VueCesium from 'vue-cesium'
 

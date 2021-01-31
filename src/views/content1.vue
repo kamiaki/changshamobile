@@ -1,56 +1,30 @@
 <template>
-  <div class="cs-content1-warp">
+  <div class="cs-content-warp">
     <!--地图-->
-    <Map2D1 v-if="showMap2D"></Map2D1>
-    <Map3D1 v-else></Map3D1>
+    <Map2D :is-content="'content1'" v-if="showMap2d" />
+    <Map3D :is-content="'content1'" v-else />
     <!--地图切换按钮-->
-    <div class="fixed-top cs-control-btns">
-      <van-button
-        type="info"
-        size="small"
-        class="cs-button"
-        :plain="!showMap2D"
-        @click="showMap2D = !showMap2D"
-      >
-        地图
-      </van-button>
-      <van-button
-        type="info"
-        size="small"
-        :plain="showMap2D"
-        class="cs-button"
-        @click="showMap2D = !showMap2D"
-      >
-        三维
-      </van-button>
-    </div>
+    <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
   </div>
 </template>
 <script>
-import Map2D1 from '@/components/content1/map2d/Map2D1'
-import Map3D1 from '@/components/content1/map3d/Map3D1'
+import Map2D from '@/components/map2d/Map2D'
+import Map3D from '@/components/map3d/Map3D'
+import MapTabs from '@/components/MapTabs'
 
 export default {
   name: 'Content1',
   data () {
     return {
-      showMap2D: true
+      showMap2d: true
     }
   },
-  components: { Map2D1, Map3D1 }
-}
-</script>
-<style lang="scss" scoped>
-.cs-content1-warp {
-  height: calc(100vh - 50px);
-  .cs-control-btns {
-    left: 10px;
-    top: 10px;
-    .cs-button {
-      padding: 0 15px;
-      border: 0;
-      border-radius: 0;
+  components: { Map2D, Map3D, MapTabs },
+  methods: {
+    // 设置地图类别
+    getMap2d (val) {
+      this.showMap2d = val
     }
   }
 }
-</style>
+</script>

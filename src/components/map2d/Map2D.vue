@@ -10,12 +10,13 @@
     <!-- 图层控制 -->
     <LayerControl
       @watchTileLayer="watchTileLayer"
-      :switches="$store.state.vuexContent1.switches"
+      :is-content="isContent"
+      :switches="switches"
     />
     <!-- 时间轴 -->
     <LayerTimeline @getCurTime="getCurTime" />
     <!-- 图例 -->
-    <LayerLegend />
+    <LayerLegend v-if="isContent === 'content1'" />
   </div>
 </template>
 
@@ -32,6 +33,12 @@ import mixin from '../mixin'
 export default {
   name: 'Map2D1',
   mixins: [mixin],
+  props: {
+    isContent: {
+      type: String,
+      default: ''
+    }
+  },
   components: { LMap, LayerControl, LayerTimeline, LayerLegend },
   data () {
     return {
@@ -41,7 +48,7 @@ export default {
       leafletMap: undefined,
       leafletTileLayer: undefined,
       rectangle: [[30.129666, 108.796621], [24.64278, 114.266381]],
-      // 图层
+      // content1 图层
       layer2_1: L.layerGroup(), // 设备雷达---散点   √
       layer2_2: L.layerGroup(), // 设备电场---散点   √
       layer2_3: L.layerGroup(), // 设备闪电---散点   √
@@ -51,13 +58,17 @@ export default {
       layer4_3: undefined, // 雷电强度---贴色斑图---!!!暂时不做
       layer4_4: undefined, // 雷电聚类---聚类---!!!暂时不做
       layer5_1: L.imageOverlay('', [[0, 0], [0, 0]]), // 电场色斑图---贴色斑图   √
+      // content2 图层
+      layer6_1: L.layerGroup(), // 预警雷达---散点   √
+      layer6_2: L.layerGroup(), // 预警电场---散点   √
+      layer6_3: L.layerGroup(), // 预警闪电---散点   √
       // 时间轴
       curTime: ''
     }
   },
   computed: {
     switches () {
-      return this.$store.state.vuexContent1.switches
+      return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     },
     changeSwitch () {
       return Object.values(this.switches)
@@ -133,77 +144,116 @@ export default {
     },
     // 展示隐藏贴图图层
     showProduct () {
-      // 设备
-      if (this.switches.switch2_1) {
-        this.layer2_1.addTo(this.leafletMap)
-      } else {
-        this.layer2_1.remove()
+      if (this.isContent === 'content1') {
+        // 设备
+        if (this.switches.switch2_1) {
+          this.layer2_1.addTo(this.leafletMap)
+        } else {
+          this.layer2_1.remove()
+        }
+        if (this.switches.switch2_2) {
+          this.layer2_2.addTo(this.leafletMap)
+        } else {
+          this.layer2_2.remove()
+        }
+        if (this.switches.switch2_3) {
+          this.layer2_3.addTo(this.leafletMap)
+        } else {
+          this.layer2_3.remove()
+        }
+        // 组合反射率拼图
+        if (this.switches.switch3_1) {
+          this.layer3_1.addTo(this.leafletMap)
+        } else {
+          this.layer3_1.remove()
+        }
+        // 雷电
+        if (this.switches.switch4_1) {
+          this.layer4_1.addTo(this.leafletMap)
+        } else {
+          this.layer4_1.remove()
+        }
+        // 电场色斑图
+        if (this.switches.switch5_1) {
+          this.layer5_1.addTo(this.leafletMap)
+        } else {
+          this.layer5_1.remove()
+        }
       }
-      if (this.switches.switch2_2) {
-        this.layer2_2.addTo(this.leafletMap)
-      } else {
-        this.layer2_2.remove()
-      }
-      if (this.switches.switch2_3) {
-        this.layer2_3.addTo(this.leafletMap)
-      } else {
-        this.layer2_3.remove()
-      }
-      // 组合反射率拼图
-      if (this.switches.switch3_1) {
-        this.layer3_1.addTo(this.leafletMap)
-      } else {
-        this.layer3_1.remove()
-      }
-      // 雷电
-      if (this.switches.switch4_1) {
-        this.layer4_1.addTo(this.leafletMap)
-      } else {
-        this.layer4_1.remove()
-      }
-      // 电场色斑图
-      if (this.switches.switch5_1) {
-        this.layer5_1.addTo(this.leafletMap)
-      } else {
-        this.layer5_1.remove()
+      if (this.isContent === 'content2') {
+        // 预警
+        if (this.switches.switch6_1) {
+          this.layer6_1.addTo(this.leafletMap)
+        } else {
+          this.layer6_1.remove()
+        }
+        if (this.switches.switch6_2) {
+          this.layer6_2.addTo(this.leafletMap)
+        } else {
+          this.layer6_2.remove()
+        }
+        if (this.switches.switch6_3) {
+          this.layer6_3.addTo(this.leafletMap)
+        } else {
+          this.layer6_3.remove()
+        }
       }
     },
     // 设置贴图 init 是否初始化
     setProduct (time, init) {
-      // /////////////////////////////////////////////设备
-      if (this.switches.switch2_1 || init) {
-        // 在这里改变 设备状态
-        this.layer2_1.clearLayers()
-        this.getRandomPoints(2, 1)
+      if (this.isContent === 'content1') {
+        // /////////////////////////////////////////////设备
+        if (this.switches.switch2_1 || init) {
+          // 在这里改变 设备状态
+          this.layer2_1.clearLayers()
+          this.getRandomPoints(2, 1)
+        }
+        if (this.switches.switch2_2 || init) {
+          // 在这里改变 设备状态
+          this.layer2_2.clearLayers()
+          this.getRandomPoints(2, 2)
+        }
+        if (this.switches.switch2_3 || init) {
+          // 在这里改变 设备状态
+          this.layer2_3.clearLayers()
+          this.getRandomPoints(2, 3)
+        }
+        // /////////////////////////////////////////////组合反射
+        if (this.switches.switch3_1 || init) {
+          // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
+          const name = randomFlow(1, 11, 0)
+          this.layer3_1.setBounds(this.rectangle)
+          this.layer3_1.setUrl(require('@/assets/timeline/layer1/' + name + '.png'))
+        }
+        // /////////////////////////////////////////////雷电
+        if (this.switches.switch4_1 || init) {
+          // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
+          this.layer4_1.clearLayers()
+          this.getRandomPoints(4, 1)
+        }
+        // /////////////////////////////////////////////电场
+        if (this.switches.switch5_1 || init) {
+          const name = randomFlow(1, 4, 0)
+          this.layer5_1.setBounds(this.rectangle)
+          this.layer5_1.setUrl(require('@/assets/carouselImg/' + name + '.png'))
+        }
       }
-      if (this.switches.switch2_2 || init) {
-        // 在这里改变 设备状态
-        this.layer2_2.clearLayers()
-        this.getRandomPoints(2, 2)
-      }
-      if (this.switches.switch2_3 || init) {
-        // 在这里改变 设备状态
-        this.layer2_3.clearLayers()
-        this.getRandomPoints(2, 3)
-      }
-      // /////////////////////////////////////////////组合反射
-      if (this.switches.switch3_1 || init) {
-        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
-        const name = randomFlow(1, 11, 0)
-        this.layer3_1.setBounds(this.rectangle)
-        this.layer3_1.setUrl(require('@/assets/timeline/layer1/' + name + '.png'))
-      }
-      // /////////////////////////////////////////////雷电
-      if (this.switches.switch4_1 || init) {
-        // 在这里写后台获取图片的axios,根据 time 和 类型 请求,拿到url和边界
-        this.layer4_1.clearLayers()
-        this.getRandomPoints(4, 1)
-      }
-      // /////////////////////////////////////////////电场
-      if (this.switches.switch5_1 || init) {
-        const name = randomFlow(1, 4, 0)
-        this.layer5_1.setBounds(this.rectangle)
-        this.layer5_1.setUrl(require('@/assets/carouselImg/' + name + '.png'))
+      if (this.isContent === 'content2') {
+        if (this.switches.switch6_1 || init) {
+          // 在这里改变 设备状态
+          this.layer6_1.clearLayers()
+          this.getRandomPoints(6, 1)
+        }
+        if (this.switches.switch6_2 || init) {
+          // 在这里改变 设备状态
+          this.layer6_2.clearLayers()
+          this.getRandomPoints(6, 2)
+        }
+        if (this.switches.switch6_3 || init) {
+          // 在这里改变 设备状态
+          this.layer6_3.clearLayers()
+          this.getRandomPoints(6, 3)
+        }
       }
     },
     // 生成随机散点
@@ -274,6 +324,55 @@ export default {
               .openPopup()
           })
           this.layer4_1.addLayer(maker)
+        }
+      }
+      // ////////////////////////////////////////////预警
+      // /////////////////////////////////////////////设备-雷达
+      if (num1 === 6 && num2 === 1) {
+        for (let i = 0; i < 10; i++) {
+          const y = randomFlow(26.663183, 29.806257, 2)
+          const x = randomFlow(110.335938, 113.279785, 2)
+          const maker = L.marker([y, x], { icon: this.getIcon('leida') })
+          maker.on('click', function (e) {
+            maker
+              .bindPopup(
+                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
+              )
+              .openPopup()
+          })
+          this.layer6_1.addLayer(maker)
+        }
+      }
+      // /////////////////////////////////////////////设备-电场
+      if (num1 === 6 && num2 === 2) {
+        for (let i = 0; i < 10; i++) {
+          const y = randomFlow(26.663183, 29.806257, 2)
+          const x = randomFlow(110.335938, 113.279785, 2)
+          const maker = L.marker([y, x], { icon: this.getIcon('dianchang') })
+          maker.on('click', function (e) {
+            maker
+              .bindPopup(
+                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
+              )
+              .openPopup()
+          })
+          this.layer6_2.addLayer(maker)
+        }
+      }
+      // /////////////////////////////////////////////设备-闪电
+      if (num1 === 6 && num2 === 3) {
+        for (let i = 0; i < 10; i++) {
+          const y = randomFlow(26.663183, 29.806257, 2)
+          const x = randomFlow(110.335938, 113.279785, 2)
+          const maker = L.marker([y, x], { icon: this.getIcon('shandian') })
+          maker.on('click', function (e) {
+            maker
+              .bindPopup(
+                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
+              )
+              .openPopup()
+          })
+          this.layer6_3.addLayer(maker)
         }
       }
     }

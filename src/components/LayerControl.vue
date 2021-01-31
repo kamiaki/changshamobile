@@ -7,7 +7,7 @@
         trigger="click"
       >
         <van-cell
-          v-for="(item, itemIndex) in layer.list"
+          v-for="item in layer.list"
           :key="item[0]"
           center
           :title="item[0]"
@@ -17,8 +17,8 @@
               v-model="item[1]"
               size="18"
               class="ml-1"
-              @input="watchTileLayer(index, item, itemIndex)"
-              :disabled="item[2] && item[2] === 'disabled'"
+              @input="watchTileLayer(index, item)"
+              :disabled="item[2] === 'disabled'"
             />
           </template>
         </van-cell>
@@ -43,15 +43,19 @@
 export default {
   name: 'LayerControl',
   props: {
+    is2d: {
+      type: Boolean,
+      default: true
+    },
     switches: {
       type: Object,
       default () {
         return {}
       }
     },
-    is2d: {
-      type: Boolean,
-      default: true
+    isContent: {
+      type: String,
+      default: ''
     }
   },
   created () { },
@@ -69,48 +73,69 @@ export default {
       ['矢量地图', false, 'vec_c'],
       ['地形晕渲', false, 'ter_c']
     ]
-    return {
-      layerList: [
-        {
-          icon: require('@/assets/img/layerControl/wp.png'),
-          title: '地图瓦片',
-          showPopover: false,
-          list: this.is2d ? tiles2d : tiles3d
-        },
+    let layerList = [
+      {
+        icon: require('@/assets/img/layerControl/wp.png'),
+        title: '地图瓦片',
+        showPopover: false,
+        list: this.is2d ? tiles2d : tiles3d
+      }
+    ]
+    if (this.isContent === 'content1') {
+      const content1Layer = [
         {
           icon: require('@/assets/img/layerControl/zt.png'),
           title: '设备状态',
           showPopover: false,
           list: [
-            ['雷达', this.switches.switch2_1],
-            ['电场', this.switches.switch2_2],
-            ['闪电', this.switches.switch2_3]
+            ['雷达', this.switches.switch2_1, '', [2, 1]],
+            ['电场', this.switches.switch2_2, '', [2, 2]],
+            ['闪电', this.switches.switch2_3, '', [2, 3]]
           ]
         },
         {
           icon: require('@/assets/img/layerControl/fs.png'),
           title: '组合反射',
           showPopover: false,
-          list: [['组合反射率拼图', this.switches.switch3_1]]
+          list: [['组合反射率拼图', this.switches.switch3_1, '', [3, 1]]]
         },
         {
           icon: require('@/assets/img/layerControl/ld.png'),
           title: '雷电',
           showPopover: false,
           list: [
-            ['散点', this.switches.switch4_1],
-            ['密度', this.switches.switch4_2, 'disabled'],
-            ['强度', this.switches.switch4_3, 'disabled'],
-            ['聚类', this.switches.switch4_4, 'disabled']
+            ['散点', this.switches.switch4_1, '', [4, 1]],
+            ['密度', this.switches.switch4_2, 'disabled', [4, 2]],
+            ['强度', this.switches.switch4_3, 'disabled', [4, 3]],
+            ['聚类', this.switches.switch4_4, 'disabled', [4, 4]]
           ]
         },
         {
           icon: require('@/assets/img/layerControl/dc.png'),
           title: '电场',
           showPopover: false,
-          list: [['色斑图', this.switches.switch5_1]]
+          list: [['色斑图', this.switches.switch5_1, '', [5, 1]]]
         }
-      ],
+      ]
+      layerList = layerList.concat(content1Layer)
+    }
+    if (this.isContent === 'content2') {
+      const content2Layer = [
+        {
+          icon: require('@/assets/img/layerControl/ldyj.png'),
+          title: '雷电预警',
+          showPopover: false,
+          list: [
+            ['雷达', this.switches.switch6_1, '', [6, 1]],
+            ['电场', this.switches.switch6_2, '', [6, 2]],
+            ['闪电', this.switches.switch6_3, '', [6, 3]]
+          ]
+        }
+      ]
+      layerList = layerList.concat(content2Layer)
+    }
+    return {
+      layerList: layerList,
       statistics: {
         icon: require('@/assets/img/layerControl/tj.png'),
         title: '统计'
@@ -119,9 +144,9 @@ export default {
   },
   methods: {
     // layer图层控制
-    watchTileLayer (index, item, itemIndex) {
+    watchTileLayer (index, item) {
       index === 0 && this.changeLayer1(item[2])
-      index !== 0 && this.changeLayer(index, itemIndex)
+      index !== 0 && this.changeLayer(item[3])
       setTimeout(() => (this.layerList[index].showPopover = false), 300)
     },
     // 地图瓦片切换
@@ -133,10 +158,13 @@ export default {
       this.$emit('watchTileLayer', val)
     },
     // 设备状态、组合反射、雷电、电场切换
-    changeLayer (index, itemIndex) {
-      index++
-      itemIndex++
-      this.$store.dispatch('vuexContent1/switchesAction', [index, itemIndex])
+    changeLayer (arr) {
+      if (this.isContent === 'content1') {
+        this.$store.dispatch('vuexContent1/switchesAction', arr)
+      }
+      if (this.isContent === 'content2') {
+        this.$store.dispatch('vuexContent2/switchesAction', arr)
+      }
     }
   }
 }
