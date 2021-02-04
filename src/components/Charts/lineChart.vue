@@ -76,7 +76,7 @@ export default {
           nameLocation: 'end',
           nameGap: 10,
           splitLine: { lineStyle: { color: '#eee' } },
-          axisTick: { show: false }
+          axisTick: { inside: true }
         },
         series: [
           {
