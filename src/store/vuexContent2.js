@@ -5,7 +5,8 @@ const vuexContent2 = {
     switches: {
       switch6_1: false, // 雷达
       switch6_2: false, // 电场
-      switch6_3: false // 闪电
+      switch6_3: false, // 闪电
+      switch7_1: true // 雷达色斑图
     }
   },
   mutations: {

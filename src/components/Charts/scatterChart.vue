@@ -117,17 +117,17 @@ export default {
         yAxis: [
           {
             name: '电场曲线',
-            max: 50,
-            min: -50,
-            splitNumber: 4,
+            max: 60,
+            min: -60,
+            splitNumber: 8,
             splitLine: { show: false },
             axisTick: { inside: true }
           },
           {
             name: '电场散点',
-            max: 50,
-            min: -50,
-            splitNumber: 4,
+            max: 60,
+            min: -60,
+            splitNumber: 8,
             position: 'right',
             splitLine: { lineStyle: { color: '#eee' } },
             axisTick: { inside: true }

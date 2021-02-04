@@ -19,55 +19,89 @@
 <script>
 export default {
   name: 'LayerLegend',
+  props: {
+    isContent: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
-    return {
-      legendList: [
-        {
-          title: '组合反射',
-          switch: 'switch3_1',
-          unit: 'dBZ',
-          data: [
-            [65, 999, 'rgb(231,0,255)'],
-            [60, 65, 'rgb(240,120,255)'],
-            [55, 60, 'rgb(255,255,255)'],
-            [50, 55, 'rgb(255,0,0)'],
-            [45, 50, 'rgb(173,0,0)'],
-            [40, 45, 'rgb(255,255,0)'],
-            [35, 40, 'rgb(255,190,0)'],
-            [30, 35, 'rgb(0,239,0)'],
-            [25, 30, 'rgb(0,186,0)'],
-            [20, 25, 'rgb(0,251,148)'],
-            [15, 20, 'rgb(49,0,148)'],
-            [10, 15, 'rgb(0,146,206)'],
-            [5, 10, 'rgb(0,178,255)'],
-            [0, 5, 'rgb(0,227,255)'],
-            [-5, 0, 'rgb(115,117,115)'],
-            [-999, -5, 'rgb(90,90,90)']
-          ]
-        },
-        {
-          title: '电场',
-          switch: 'switch5_1',
-          unit: '分钟',
-          data: [
-            [0, 6, 'rgb(229,19,102)'],
-            [6, 12, 'rgb(218,26,144)'],
-            [12, 18, 'rgb(206,33,186)'],
-            [18, 24, 'rgb(164,35,208)'],
-            [24, 30, 'rgb(108,34,221)'],
-            [30, 36, 'rgb(51,33,234)'],
-            [36, 42, 'rgb(14,54,242)'],
-            [42, 48, 'rgb(14,116,242)'],
-            [48, 54, 'rgb(14,180,242)'],
-            [54, 60, 'rgb(14,242,242)']
-          ]
-        }
+    const content1List = [
+      {
+        title: '组合反射',
+        switch: 'switch3_1',
+        unit: 'dBZ',
+        data: [
+          [65, 999, 'rgb(231,0,255)'],
+          [60, 65, 'rgb(240,120,255)'],
+          [55, 60, 'rgb(255,255,255)'],
+          [50, 55, 'rgb(255,0,0)'],
+          [45, 50, 'rgb(173,0,0)'],
+          [40, 45, 'rgb(255,255,0)'],
+          [35, 40, 'rgb(255,190,0)'],
+          [30, 35, 'rgb(0,239,0)'],
+          [25, 30, 'rgb(0,186,0)'],
+          [20, 25, 'rgb(0,251,148)'],
+          [15, 20, 'rgb(49,0,148)'],
+          [10, 15, 'rgb(0,146,206)'],
+          [5, 10, 'rgb(0,178,255)'],
+          [0, 5, 'rgb(0,227,255)'],
+          [-5, 0, 'rgb(115,117,115)'],
+          [-999, -5, 'rgb(90,90,90)']
+        ]
+      },
+      {
+        title: '电场',
+        switch: 'switch5_1',
+        unit: '分钟',
+        data: [
+          [0, 6, 'rgb(229,19,102)'],
+          [6, 12, 'rgb(218,26,144)'],
+          [12, 18, 'rgb(206,33,186)'],
+          [18, 24, 'rgb(164,35,208)'],
+          [24, 30, 'rgb(108,34,221)'],
+          [30, 36, 'rgb(51,33,234)'],
+          [36, 42, 'rgb(14,54,242)'],
+          [42, 48, 'rgb(14,116,242)'],
+          [48, 54, 'rgb(14,180,242)'],
+          [54, 60, 'rgb(14,242,242)']
+        ]
+      }
+    ]
+    const content2List = [{
+      title: '雷电预警',
+      switch: 'switch7_1',
+      unit: '分钟',
+      data: [
+        [0, 6, 'rgb(229,19,102)'],
+        [6, 12, 'rgb(218,26,144)'],
+        [12, 18, 'rgb(206,33,186)'],
+        [18, 24, 'rgb(164,35,208)'],
+        [24, 30, 'rgb(108,34,221)'],
+        [30, 36, 'rgb(51,33,234)'],
+        [36, 42, 'rgb(14,54,242)'],
+        [42, 48, 'rgb(14,116,242)'],
+        [48, 54, 'rgb(14,180,242)'],
+        [54, 60, 'rgb(14,242,242)']
       ]
+    }]
+    return {
+      content1List: content1List,
+      content2List: content2List,
+      legendList: []
+    }
+  },
+  created () {
+    this.legendList = (this.isContent === 'content1' ? this.content1List : this.content2List)
+  },
+  watch: {
+    isContent (val, oldVal) {
+      if (val !== oldVal) { this.legendList = (this.isContent === 'content1' ? this.content1List : this.content2List) }
     }
   },
   computed: {
     switches () {
-      return this.$store.state.vuexContent1.switches
+      return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     }
   },
   methods: {

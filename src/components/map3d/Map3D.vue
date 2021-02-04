@@ -58,7 +58,7 @@
         <vc-collection-primitive-billboard :billboards="dataSource6_3" />
       </vc-collection-primitive>
       <vc-primitive-ground
-        :show="isContent === 'content2'"
+        :show="switches.switch7_1 && isContent === 'content2'"
         :appearance="dataSource7_1"
       >
         <vc-instance-geometry>
@@ -84,7 +84,7 @@
     <!-- 时间轴 -->
     <LayerTimeline @getCurTime="getCurTime" />
     <!-- 图例 -->
-    <LayerLegend v-if="isContent === 'content1'" />
+    <LayerLegend :is-content="isContent" />
   </div>
 </template>
 

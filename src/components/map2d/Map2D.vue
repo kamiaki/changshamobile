@@ -16,7 +16,7 @@
     <!-- 时间轴 -->
     <LayerTimeline @getCurTime="getCurTime" />
     <!-- 图例 -->
-    <LayerLegend v-if="isContent === 'content1'" />
+    <LayerLegend :is-content="isContent" />
   </div>
 </template>
 
@@ -183,7 +183,12 @@ export default {
       }
       if (this.isContent === 'content2') {
         // 雷电预警
-        this.layer7_1.addTo(this.leafletMap)
+        // 色斑图
+        if (this.switches.switch7_1) {
+          this.layer7_1.addTo(this.leafletMap)
+        } else {
+          this.layer7_1.remove()
+        }
       }
     },
     // 设置贴图 init 是否初始化

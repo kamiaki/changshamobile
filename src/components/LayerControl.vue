@@ -1,35 +1,39 @@
 <template>
   <div class="fixed-top cs-layer-control">
     <van-row v-for="(layer, index) in layerList" :key="index">
-      <van-popover
-        v-model="layer.showPopover"
-        placement="left-start"
-        trigger="click"
-      >
-        <van-cell
-          v-for="item in layer.list"
-          :key="item[0]"
-          center
-          :title="item[0]"
+      <template v-if="!layer.hidden">
+        <van-popover
+          v-model="layer.showPopover"
+          placement="left-start"
+          trigger="click"
         >
-          <template #right-icon>
-            <van-switch
-              v-model="item[1]"
-              size="18"
-              class="ml-1"
-              @input="watchTileLayer(index, item)"
-              :disabled="item[2] === 'disabled'"
-            />
+          <div v-for="item in layer.list" :key="item[0]">
+            <van-cell v-if="item[2] !== 'disabled'" center :title="item[0]">
+              <template #right-icon>
+                <van-switch
+                  v-model="item[1]"
+                  size="18"
+                  class="ml-1"
+                  @input="watchTileLayer(index, item)"
+                />
+              </template>
+            </van-cell>
+          </div>
+          <template #reference>
+            <van-button
+              type="default"
+              size="small"
+              class="cs-button cs-button2"
+            >
+              <van-image width="20" height="20" :src="layer.icon" />
+              <p>{{ layer.title }}</p>
+            </van-button>
           </template>
-        </van-cell>
-        <template #reference>
-          <van-button type="default" size="small" class="cs-button cs-button2">
-            <van-image width="20" height="20" :src="layer.icon" />
-            <p>{{ layer.title }}</p>
-          </van-button>
-        </template>
-      </van-popover>
+        </van-popover>
+      </template>
     </van-row>
+
+    <!-- 统计 -->
     <van-row v-if="isContent === 'content1'" class="mt-1">
       <van-button type="info" size="small" class="cs-button" to="/statistics">
         <van-image width="20" height="20" :src="statistics.icon" />
@@ -73,10 +77,18 @@ export default {
       ['矢量地图', false, 'vec_c'],
       ['地形晕渲', false, 'ter_c']
     ]
+    /**
+     * icon 标签图片
+     * title 标签名称
+     * hidden 是否隐藏本标签
+     * showPopover 本标签pop是否为开启状态
+     * list 子标签
+     */
     let layerList = [
       {
         icon: require('@/assets/img/layerControl/wp.png'),
         title: '地图瓦片',
+        hidden: false,
         showPopover: false,
         list: this.is2d ? tiles2d : tiles3d
       }
@@ -86,6 +98,7 @@ export default {
         {
           icon: require('@/assets/img/layerControl/zt.png'),
           title: '设备状态',
+          hidden: false,
           showPopover: false,
           list: [
             ['雷达', this.switches.switch2_1, '', [2, 1]],
@@ -96,12 +109,14 @@ export default {
         {
           icon: require('@/assets/img/layerControl/fs.png'),
           title: '组合反射',
+          hidden: false,
           showPopover: false,
           list: [['组合反射率拼图', this.switches.switch3_1, '', [3, 1]]]
         },
         {
           icon: require('@/assets/img/layerControl/ld.png'),
           title: '雷电',
+          hidden: false,
           showPopover: false,
           list: [
             ['散点', this.switches.switch4_1, '', [4, 1]],
@@ -113,6 +128,7 @@ export default {
         {
           icon: require('@/assets/img/layerControl/dc.png'),
           title: '电场',
+          hidden: false,
           showPopover: false,
           list: [['色斑图', this.switches.switch5_1, '', [5, 1]]]
         }
@@ -124,11 +140,13 @@ export default {
         {
           icon: require('@/assets/img/layerControl/ldyj.png'),
           title: '雷电预警',
+          hidden: true,
           showPopover: false,
           list: [
             ['雷达', this.switches.switch6_1, 'disabled', [6, 1]],
             ['电场', this.switches.switch6_2, 'disabled', [6, 2]],
-            ['闪电', this.switches.switch6_3, 'disabled', [6, 3]]
+            ['闪电', this.switches.switch6_3, 'disabled', [6, 3]],
+            ['雷达色斑图', this.switches.switch7_1, 'disabled', [7, 1]]
           ]
         }
       ]
