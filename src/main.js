@@ -20,10 +20,13 @@ import 'vant/lib/index.css'
 
 // 引入2d地图样式库
 import 'leaflet/dist/leaflet.css'
+
+import echarts from 'echarts'
 Vue.use(VueCesium, {
   cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
 })
 Vue.use(Vant)
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 

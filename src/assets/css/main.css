@@ -1,3 +1,17 @@
 .cs-content-warp {
   height: calc(100vh - 50px);
 }
+
+.cs-statistics-warp{
+  background-color: #f2f2f2;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.cs-statistics-warp .cs-tabs{
+  background-color: #fff;
+}
+
+.cs-statistics-warp .van-tabs__nav--card{
+  margin: 0!important;
+}

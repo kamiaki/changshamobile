@@ -30,7 +30,7 @@
         </template>
       </van-popover>
     </van-row>
-    <van-row class="mt-1">
+    <van-row v-if="isContent === 'content1'" class="mt-1">
       <van-button type="info" size="small" class="cs-button" to="/statistics">
         <van-image width="20" height="20" :src="statistics.icon" />
         <p>{{ statistics.title }}</p>

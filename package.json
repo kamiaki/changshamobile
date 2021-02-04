@@ -11,6 +11,7 @@
     "aki_js_utils": "^1.0.6",
     "amfe-flexible": "^2.2.1",
     "core-js": "^3.6.5",
+    "echarts": "^4.8.0",
     "leaflet": "^1.7.1",
     "vant": "^2.12.4",
     "vue": "^2.6.11",
