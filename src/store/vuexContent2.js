@@ -3,7 +3,7 @@ const vuexContent2 = {
   state: {
     // 地图图层开关切换
     switches: {
-      switch6_1: true, // 雷达
+      switch6_1: false, // 雷达
       switch6_2: false, // 电场
       switch6_3: false // 闪电
     }

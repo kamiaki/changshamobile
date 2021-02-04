@@ -126,9 +126,9 @@ export default {
           title: '雷电预警',
           showPopover: false,
           list: [
-            ['雷达', this.switches.switch6_1, '', [6, 1]],
-            ['电场', this.switches.switch6_2, '', [6, 2]],
-            ['闪电', this.switches.switch6_3, '', [6, 3]]
+            ['雷达', this.switches.switch6_1, 'disabled', [6, 1]],
+            ['电场', this.switches.switch6_2, 'disabled', [6, 2]],
+            ['闪电', this.switches.switch6_3, 'disabled', [6, 3]]
           ]
         }
       ]

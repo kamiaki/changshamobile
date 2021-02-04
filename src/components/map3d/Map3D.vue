@@ -57,6 +57,14 @@
       >
         <vc-collection-primitive-billboard :billboards="dataSource6_3" />
       </vc-collection-primitive>
+      <vc-primitive-ground
+        :show="isContent === 'content2'"
+        :appearance="dataSource7_1"
+      >
+        <vc-instance-geometry>
+          <vc-geometry-rectangle :rectangle="rectangle" />
+        </vc-instance-geometry>
+      </vc-primitive-ground>
 
       <!-- 天地图 -->
       <vc-layer-imagery ref="layerText" :sortOrder="20">
@@ -116,9 +124,10 @@ export default {
       dataSource4_4: undefined, // 雷电聚类---聚类---!!!暂时不做
       dataSource5_1: undefined, // 电场色斑图---贴色斑图   √
       // content2 图层
-      dataSource6_1: [], // 预警雷达---散点   √
-      dataSource6_2: [], // 预警电场---散点   √
-      dataSource6_3: [], // 预警闪电---散点   √
+      dataSource6_1: [], // 预警雷达---散点---!!!暂时不做
+      dataSource6_2: [], // 预警电场---散点---!!!暂时不做
+      dataSource6_3: [], // 预警闪电---散点---!!!暂时不做
+      dataSource7_1: undefined, // 雷电预警---贴色斑图   √
       // 时间轴
       curTime: ''
     }
@@ -181,9 +190,13 @@ export default {
               })
             }
             if (this.isContent === 'content2') {
-              this.dataSource6_1 = this.setRandomPoints(2, 1)
-              this.dataSource6_2 = this.setRandomPoints(2, 2)
-              this.dataSource6_3 = this.setRandomPoints(2, 3)
+              // this.dataSource6_1 = this.setRandomPoints(2, 1)
+              // this.dataSource6_2 = this.setRandomPoints(2, 2)
+              // this.dataSource6_3 = this.setRandomPoints(2, 3)
+              const name3 = randomFlow(1, 4, 0)
+              this.dataSource7_1 = new Cesium.MaterialAppearance({
+                material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name3}.png`) } } })
+              })
             }
             // /////////////////////////////////////////////显示数据
             this.showProduct()
@@ -242,9 +255,11 @@ export default {
         this.dataSource5_1.material.uniforms.image = require(`@/assets/timeline/layer1/${name2}.png`)
       }
       if (this.isContent === 'content2') {
-        this.dataSource6_1 = this.setRandomPoints(2, 1)
-        this.dataSource6_2 = this.setRandomPoints(2, 2)
-        this.dataSource6_3 = this.setRandomPoints(2, 3)
+        // this.dataSource6_1 = this.setRandomPoints(2, 1)
+        // this.dataSource6_2 = this.setRandomPoints(2, 2)
+        // this.dataSource6_3 = this.setRandomPoints(2, 3)
+        const name3 = randomFlow(1, 4, 0)
+        this.dataSource7_1.material.uniforms.image = require(`@/assets/carouselImg/${name3}.png`)
       }
     },
     // 生成随机散点

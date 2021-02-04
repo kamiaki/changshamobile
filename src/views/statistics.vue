@@ -17,7 +17,7 @@
         v-model="active1"
       >
         <van-tab title="电场和雷电数据图">
-          <scatterChart :id="'scatterChart'" height="280px" width="100%" />
+          <scatterChart :id="'scatterChart'" height="320px" width="100%" />
         </van-tab>
       </van-tabs>
 
@@ -35,7 +35,7 @@
         <lineChart
           :id="'lineChart'"
           :data="lineChartData"
-          height="250px"
+          height="220px"
           width="100%"
         />
       </van-tabs>

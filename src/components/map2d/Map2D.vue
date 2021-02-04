@@ -59,9 +59,10 @@ export default {
       layer4_4: undefined, // 雷电聚类---聚类---!!!暂时不做
       layer5_1: L.imageOverlay('', [[0, 0], [0, 0]]), // 电场色斑图---贴色斑图   √
       // content2 图层
-      layer6_1: L.layerGroup(), // 预警雷达---散点   √
-      layer6_2: L.layerGroup(), // 预警电场---散点   √
-      layer6_3: L.layerGroup(), // 预警闪电---散点   √
+      layer6_1: undefined, // 预警雷达---散点---!!!暂时不做
+      layer6_2: undefined, // 预警电场---散点---!!!暂时不做
+      layer6_3: undefined, // 预警闪电---散点---!!!暂时不做
+      layer7_1: L.imageOverlay('', [[0, 0], [0, 0]]), // 雷电预警---贴色斑图   √
       // 时间轴
       curTime: ''
     }
@@ -181,22 +182,8 @@ export default {
         }
       }
       if (this.isContent === 'content2') {
-        // 预警
-        if (this.switches.switch6_1) {
-          this.layer6_1.addTo(this.leafletMap)
-        } else {
-          this.layer6_1.remove()
-        }
-        if (this.switches.switch6_2) {
-          this.layer6_2.addTo(this.leafletMap)
-        } else {
-          this.layer6_2.remove()
-        }
-        if (this.switches.switch6_3) {
-          this.layer6_3.addTo(this.leafletMap)
-        } else {
-          this.layer6_3.remove()
-        }
+        // 雷电预警
+        this.layer7_1.addTo(this.leafletMap)
       }
     },
     // 设置贴图 init 是否初始化
@@ -239,21 +226,10 @@ export default {
         }
       }
       if (this.isContent === 'content2') {
-        if (this.switches.switch6_1 || init) {
-          // 在这里改变 设备状态
-          this.layer6_1.clearLayers()
-          this.getRandomPoints(6, 1)
-        }
-        if (this.switches.switch6_2 || init) {
-          // 在这里改变 设备状态
-          this.layer6_2.clearLayers()
-          this.getRandomPoints(6, 2)
-        }
-        if (this.switches.switch6_3 || init) {
-          // 在这里改变 设备状态
-          this.layer6_3.clearLayers()
-          this.getRandomPoints(6, 3)
-        }
+        // 雷达预警色斑图
+        const name = randomFlow(1, 4, 0)
+        this.layer7_1.setBounds(this.rectangle)
+        this.layer7_1.setUrl(require('@/assets/carouselImg/' + name + '.png'))
       }
     },
     // 生成随机散点
@@ -326,55 +302,7 @@ export default {
           this.layer4_1.addLayer(maker)
         }
       }
-      // ////////////////////////////////////////////预警
-      // /////////////////////////////////////////////设备-雷达
-      if (num1 === 6 && num2 === 1) {
-        for (let i = 0; i < 10; i++) {
-          const y = randomFlow(26.663183, 29.806257, 2)
-          const x = randomFlow(110.335938, 113.279785, 2)
-          const maker = L.marker([y, x], { icon: this.getIcon('leida') })
-          maker.on('click', function (e) {
-            maker
-              .bindPopup(
-                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
-              )
-              .openPopup()
-          })
-          this.layer6_1.addLayer(maker)
-        }
-      }
-      // /////////////////////////////////////////////设备-电场
-      if (num1 === 6 && num2 === 2) {
-        for (let i = 0; i < 10; i++) {
-          const y = randomFlow(26.663183, 29.806257, 2)
-          const x = randomFlow(110.335938, 113.279785, 2)
-          const maker = L.marker([y, x], { icon: this.getIcon('dianchang') })
-          maker.on('click', function (e) {
-            maker
-              .bindPopup(
-                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
-              )
-              .openPopup()
-          })
-          this.layer6_2.addLayer(maker)
-        }
-      }
-      // /////////////////////////////////////////////设备-闪电
-      if (num1 === 6 && num2 === 3) {
-        for (let i = 0; i < 10; i++) {
-          const y = randomFlow(26.663183, 29.806257, 2)
-          const x = randomFlow(110.335938, 113.279785, 2)
-          const maker = L.marker([y, x], { icon: this.getIcon('shandian') })
-          maker.on('click', function (e) {
-            maker
-              .bindPopup(
-                '<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>'
-              )
-              .openPopup()
-          })
-          this.layer6_3.addLayer(maker)
-        }
-      }
+      // ///////////////////////////////////////////雷达预警
     }
   }
 }

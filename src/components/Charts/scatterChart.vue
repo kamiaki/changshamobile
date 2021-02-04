@@ -47,7 +47,7 @@ export default {
         dataY2: []
       }
       for (let i = 0; i <= 60 * 4; i++) {
-        data.dataX.push(i)
+        data.dataX.push(i % 24 + '时')
         data.dataY1.push(Math.floor(Math.random() * 30 - 15))
         data.dataY2.push([
           i,
@@ -75,11 +75,12 @@ export default {
 
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({
+        color: ['#0000fe', 'green'],
         backgroundColor: '#fff',
         grid: {
           left: 40,
-          top: 30,
-          right: 20,
+          top: 70,
+          right: 40,
           bottom: 35
         },
         xAxis: [
@@ -88,9 +89,14 @@ export default {
             show: false
           },
           {
+            data: data.dataX,
+            show: false
+          },
+          {
             position: 'bottom',
             data: data.dataX,
             boundaryGap: false,
+            axisLabel: { show: true },
             axisTick: { inside: true }
           },
           {
@@ -101,17 +107,35 @@ export default {
             axisTick: { inside: true }
           }
         ],
+        legend: {
+          show: true,
+          icon: 'roundRect',
+          itemWidth: 16,
+          itemHeight: 10,
+          top: 10
+        },
         yAxis: [
           {
+            name: '电场曲线',
             max: 50,
             min: -50,
-            splitNumber: 2,
+            splitNumber: 4,
             splitLine: { show: false },
+            axisTick: { inside: true }
+          },
+          {
+            name: '电场散点',
+            max: 50,
+            min: -50,
+            splitNumber: 4,
+            position: 'right',
+            splitLine: { lineStyle: { color: '#eee' } },
             axisTick: { inside: true }
           }
         ],
         series: [
           {
+            name: '电场曲线',
             symbol: 'none',
             data: data.dataY1,
             type: 'line',
@@ -119,25 +143,12 @@ export default {
             lineStyle: {
               color: '#0000fe',
               width: 1
-            },
-            markLine: {
-              silent: true,
-              symbolSize: 0,
-              label: {
-                show: false
-              },
-              lineStyle: {
-                color: '#333',
-                type: 'solid'
-              },
-              data: [{
-                yAxis: 50
-              }, {
-                xAxis: data.dataX[data.dataX.length - 1]
-              }]
             }
           },
           {
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            name: '电场散点',
             data: scatterData,
             type: 'scatter'
           }
