@@ -1,17 +1,17 @@
 export default {
   methods: {
     // 地图标记点图标
-    getIconUrl (type) {
+    getIconUrl (type, isActive) {
       let url
       switch (type) {
         case 'leida':
-          url = require('@/assets/img/mapMark/leida/leida.png')
+          url = isActive ? require('@/assets/img/mapMark/leida/leida.png') : require('@/assets/img/mapMark/leida/leida2.png')
           break
         case 'dianchang':
-          url = require('@/assets/img/mapMark/dianchang/dianchang.gif')
+          url = isActive ? require('@/assets/img/mapMark/dianchang/dianchang.gif') : require('@/assets/img/mapMark/dianchang/dianchang2.gif')
           break
         case 'shandian':
-          url = require('@/assets/img/mapMark/shandian/shandian.png')
+          url = isActive ? require('@/assets/img/mapMark/shandian/shandian.png') : require('@/assets/img/mapMark/shandian/shandian2.png')
           break
         case 'leidiansandian':
           url = require('@/assets/img/mapMark/leidiansandian/leidiansandian.png')

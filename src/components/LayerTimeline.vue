@@ -27,16 +27,20 @@
       />
       <div class="ml-5 mr-5 position-relative bg-white font-small timeline-bar">
         <div class="position-absolute timeSta">
-          {{ startTime | formateTime }}
+          {{ startTime | formatTimestamp("hh:mm") }}
         </div>
         <div
           class="position-absolute bar"
-          :style="{ left: ((curTime - startTime) / stepTime) * 10 + 'px' }"
+          :style="{
+            left: ((curTime - startTime) / stepTime) * (200 / 24) + 'px',
+          }"
         >
-          <p class="position-absolute">{{ curTime | formateTime }}</p>
+          <p class="position-absolute">
+            {{ curTime | formatTimestamp("hh:mm") }}
+          </p>
         </div>
         <div class="position-absolute timeEnd">
-          {{ endTime | formateTime }}
+          {{ endTime | formatTimestamp("hh:mm") }}
         </div>
       </div>
     </div>
@@ -58,17 +62,17 @@ export default {
       startTime: null, // 开始时间
       endTime: null, // 结束时间
       curTime: null, // 当前时间
-      stepTime: 6 * 60 * 1000, // 播放步长 6分钟
-      timeInterval: null
+      stepTime: 60 * 60 * 1000, // 播放步长 60分钟
+      timeInterval: null,
+
+      timeArr: []
     }
   },
   created () {
     this.reset()
   },
   filters: {
-    formateTime (val) {
-      return formatTimestamp(val, 'hh:mm')
-    }
+    formatTimestamp
   },
   methods: {
     // 播放
@@ -81,7 +85,7 @@ export default {
           } else {
             this.curTime += this.stepTime
           }
-          this.$emit('getCurTime', this.curTime)
+          this.$emit('getCurTime', [this.curTime, this.timeArr])
         }, 2000)
       }
     },
@@ -93,17 +97,15 @@ export default {
     },
     // 初始化
     reset () {
-      let currentTime = new Date().getTime()
-      currentTime = this.getValidatedTime(currentTime)
-      this.endTime = currentTime
-      this.startTime = currentTime - 20 * this.stepTime
+      const currentTime = new Date().getTime()
+      this.endTime = parseInt(currentTime / this.stepTime) * this.stepTime
+      this.startTime = this.endTime - 24 * this.stepTime
       this.curTime = this.startTime
+      for (let i = 0; i < 24; i++) {
+        this.timeArr.push(formatTimestamp(this.startTime + i * this.stepTime, 'yyyy-MM-ddThh:00:00'))
+      }
+      this.$emit('getCurTime', [this.curTime, this.timeArr])
       this.stop()
-    },
-    // 获取 :00 :06 :12...:54 格式的时间
-    getValidatedTime (num) {
-      const sixSecondsNum = parseInt(num / this.stepTime)
-      return sixSecondsNum * this.stepTime
     }
   }
 }
