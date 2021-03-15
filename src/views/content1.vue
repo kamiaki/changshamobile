@@ -42,7 +42,7 @@ export default {
       provinceCode: '430000',
       stepMinute: 60,
       curTime: '', // 时间轴
-      dateTimes: []
+      dataTimes: []
     }
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },

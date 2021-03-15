@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed-top font-sm text-center line-height-2 text-grey">
+    <div class="fixed-top font-sm text-center bg-highlight line-height-2 text-white">
       {{ curTime | formatTimestamp("yyyy-MM-dd hh:00:00") }}
     </div>
     <!-- 地图 -->
@@ -132,8 +132,8 @@ export default {
     },
     // 展示隐藏产品
     showProduct () {
-      console.log(this.data)
-      // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      console.log(curTimeKey)
       if (this.isContent === 'content1') {
         if (this.switches.switch2_2) {
           const res = this.data.layer2_2_Data
@@ -164,7 +164,6 @@ export default {
         // 雷电
         if (this.switches.switch4_1) {
           // const curList = this.layer4_1_Data[curTimeKey]
-          console.log(this.data.layer4_1_Data)
           const curList = Object.entries(this.data.layer4_1_Data)[0][1]
           for (let i = 0; i < curList.length; i++) {
             const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
