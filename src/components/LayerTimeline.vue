@@ -1,16 +1,40 @@
 <template>
   <div class="fixed-bottom cs-layer-timeline">
-    <div class="flex justify-center align-center mt-1 timeline-control" v-if="startTime !== null">
-      <van-image width="22" height="22" v-if="!isplay" :src="playIcon" @click="play" />
-      <van-image width="22" height="22" v-if="isplay" :src="stopIcon" @click="stop" />
-      <van-image width="22" height="22" class="ml-h" :src="resetIcon" @click="reset" />
+    <div
+      class="flex justify-center align-center mt-1 timeline-control"
+      v-if="startTime !== null"
+    >
+      <van-image
+        width="22"
+        height="22"
+        v-if="!isplay"
+        :src="playIcon"
+        @click="play"
+      />
+      <van-image
+        width="22"
+        height="22"
+        v-if="isplay"
+        :src="stopIcon"
+        @click="stop"
+      />
+      <van-image
+        width="22"
+        height="22"
+        class="ml-h"
+        :src="resetIcon"
+        @click="reset"
+      />
       <div class="ml-5 mr-5 position-relative bg-white font-small timeline-bar">
         <div class="position-absolute timeSta">
           {{ startTime | formatTimestamp("hh:mm") }}
         </div>
-        <div class="position-absolute bar" :style="{
+        <div
+          class="position-absolute bar"
+          :style="{
             left: ((curTime - startTime) / stepTime) * (200 / 24) + 'px',
-          }">
+          }"
+        >
           <p class="position-absolute">
             {{ curTime | formatTimestamp("hh:mm") }}
           </p>
@@ -63,7 +87,7 @@ export default {
             this.curTime += this.stepTime
           }
           this.$emit('getCurTime', [this.curTime, this.timeArr])
-        }, 200)
+        }, 2000)
       }
     },
     // 暂停
