@@ -1,43 +1,18 @@
 <template>
   <div class="cs-statistics-warp">
-    <van-nav-bar
-      title="数据统计"
-      left-text=""
-      left-arrow
-      fixed
-      @click-left="goBack()"
-    />
+    <van-nav-bar title="数据统计" left-text="" left-arrow fixed @click-left="goBack()" />
     <div class="pt-5 px-1 pb-1">
-      <van-tabs
-        class="bg-white"
-        type="card"
-        background="#fff"
-        color="#1989fa"
-        style="margin-top: 4px"
-        v-model="active1"
-      >
+      <van-tabs class="bg-white" type="card" background="#fff" color="#1989fa" style="margin-top: 4px" v-model="active1">
         <van-tab title="电场和雷电数据图">
           <scatterChart :id="'scatterChart'" height="320px" width="100%" />
         </van-tab>
       </van-tabs>
 
-      <van-tabs
-        class="mt-1 bg-white"
-        type="card"
-        background="#fff"
-        color="#1989fa"
-        v-model="active2"
-        @change="changeLineChart"
-      >
-        <van-tab :title="title[0]"></van-tab>
+      <van-tabs class="mt-1 bg-white" type="card" background="#fff" color="#1989fa" v-model="active2" @change="changeLineChart">
+        <van-tab class="cccc" :title="title[0]"></van-tab>
         <van-tab :title="title[1]"></van-tab>
         <div class="font-smaller p-1">{{ title[active2] }}雷电数量统计</div>
-        <lineChart
-          :id="'lineChart'"
-          :data="lineChartData"
-          height="220px"
-          width="100%"
-        />
+        <lineChart :id="'lineChart'" :data="lineChartData" height="220px" width="100%" />
       </van-tabs>
     </div>
   </div>
@@ -85,3 +60,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.ccc {
+  background: red;
+}
+</style>
