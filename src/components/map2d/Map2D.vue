@@ -4,18 +4,9 @@
       {{ curTime | formatTimestamp("yyyy-MM-dd hh:00:00") }}
     </div>
     <!-- 地图 -->
-    <l-map
-      class="cs-leaflet-map"
-      ref="leafletMap"
-      @ready="initGis"
-      :options="options"
-    />
+    <l-map class="cs-leaflet-map" ref="leafletMap" @ready="initGis" :options="options" />
     <!-- 图层控制 -->
-    <LayerControl
-      @watchTileLayer="watchTileLayer"
-      :is-content="isContent"
-      :switches="switches"
-    />
+    <LayerControl @watchTileLayer="watchTileLayer" :is-content="isContent" :switches="switches" />
     <!-- 时间轴 -->
     <LayerTimeline @getCurTime="getCurTime" />
     <!-- 图例 -->
@@ -229,7 +220,7 @@ export default {
     },
     // 展示隐藏产品
     async showProduct () {
-      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       if (this.isContent === 'content1') {
         if (this.switches.switch2_2) {
           this.layer2_2.addTo(this.leafletMap)
@@ -243,7 +234,8 @@ export default {
         }
         // 雷电
         if (this.switches.switch4_1) {
-          const curList = this.layer4_1_data[curTimeKey]
+          // const curList = this.layer4_1_data[curTimeKey]
+          const curList = Object.entries(this.layer4_1_data)[0][1]
           for (let i = 0; i < curList.length; i++) {
             const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
             const maker = L.marker([curList[i].latitude, curList[i].longtitude], { icon: this.getIcon(`leidian_${iconName}`) })
@@ -258,7 +250,8 @@ export default {
         }
         // 电场色斑图
         if (this.switches.switch5_1) {
-          const curList = this.layer5_1_data[curTimeKey]
+          // const curList = this.layer5_1_data[curTimeKey]
+          const curList = Object.entries(this.layer5_1_data)[0][1]
           this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
           // this.layer5_1.setUrl(require(this.picUrl + curList.url))
           this.layer5_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
@@ -270,7 +263,8 @@ export default {
       if (this.isContent === 'content2') {
         // 雷电预警色斑图
         if (this.switches.switch7_1) {
-          const curList = this.layer7_1_data[curTimeKey]
+          // const curList = this.layer7_1_data[curTimeKey]
+          const curList = Object.entries(this.layer7_1_data)[0][1]
           this.layer7_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
           // this.layer7_1.setUrl(require(this.picUrl + curList.url))
           this.layer7_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
