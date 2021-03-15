@@ -38,7 +38,7 @@ export default {
   name: 'Content1',
   data () {
     return {
-      showMap2d: false,
+      showMap2d: true,
       isLoading: true,
       data: {
         layer2_1_Data: [], // 设备雷达---散点 --- !!!暂无接口
