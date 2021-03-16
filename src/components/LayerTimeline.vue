@@ -82,6 +82,7 @@ export default {
           this.isplay = true
           if (this.curTime >= this.endTime) {
             this.curTime = this.startTime
+            this.stop()
           } else {
             this.curTime += this.stepTime
           }

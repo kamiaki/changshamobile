@@ -1,12 +1,23 @@
 <template>
   <div>
-    <div class="fixed-top font-sm text-center line-height-2 text-grey">
+    <div
+      class="fixed-top font-sm text-center bg-highlight line-height-2 text-white"
+    >
       {{ curTime | formatTimestamp("yyyy-MM-dd hh:00:00") }}
     </div>
     <!-- 地图 -->
-    <l-map class="cs-leaflet-map" ref="leafletMap" @ready="initGis" :options="options" />
+    <l-map
+      class="cs-leaflet-map"
+      ref="leafletMap"
+      @ready="initGis"
+      :options="options"
+    />
     <!-- 图层控制 -->
-    <LayerControl @watchTileLayer="watchTileLayer" :is-content="isContent" :switches="switches" />
+    <LayerControl
+      @watchTileLayer="watchTileLayer"
+      :is-content="isContent"
+      :switches="switches"
+    />
     <!-- 图例 -->
     <LayerLegend :is-content="isContent" />
   </div>
@@ -132,8 +143,8 @@ export default {
     },
     // 展示隐藏产品
     showProduct () {
-      console.log(this.data)
-      // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      console.log(curTimeKey)
       if (this.isContent === 'content1') {
         if (this.switches.switch2_2) {
           const res = this.data.layer2_2_Data
@@ -163,8 +174,7 @@ export default {
         }
         // 雷电
         if (this.switches.switch4_1) {
-          // const curList = this.layer4_1_Data[curTimeKey]
-          console.log(this.data.layer4_1_Data)
+          // const curList = this.data.layer4_1_Data[curTimeKey]
           const curList = Object.entries(this.data.layer4_1_Data)[0][1]
           for (let i = 0; i < curList.length; i++) {
             const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
@@ -180,7 +190,7 @@ export default {
         }
         // 电场色斑图
         if (this.switches.switch5_1) {
-          // const curList = this.layer5_1_Data[curTimeKey]
+          // const curList = this.data.layer5_1_Data[curTimeKey]
           const curList = Object.entries(this.data.layer5_1_Data)[0][1]
           this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
           // this.layer5_1.setUrl(require(this.picUrl + curList.url))

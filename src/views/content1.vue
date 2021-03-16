@@ -1,8 +1,20 @@
 <template>
   <div class="cs-content-warp" v-if="!isLoading">
     <!--地图-->
-    <Map2D :is-content="'content1'" v-if="showMap2d" :data="data" :data-times="dataTimes" :cur-time="curTime" />
-    <Map3D :is-content="'content1'" v-else />
+    <Map2D
+      :is-content="'content1'"
+      v-if="showMap2d"
+      :data="data"
+      :data-times="dataTimes"
+      :cur-time="curTime"
+    />
+    <Map3D
+      :is-content="'content1'"
+      v-else
+      :data="data"
+      :data-times="dataTimes"
+      :cur-time="curTime"
+    />
     <!--地图切换按钮-->
     <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
     <!-- 时间轴 -->
@@ -42,7 +54,7 @@ export default {
       provinceCode: '430000',
       stepMinute: 60,
       curTime: '', // 时间轴
-      dateTimes: []
+      dataTimes: []
     }
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },
