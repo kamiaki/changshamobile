@@ -34,7 +34,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     return {
       playIcon: require('@/assets/img/layerTimeline/play.png'),
       stopIcon: require('@/assets/img/layerTimeline/stop.png'),
@@ -51,7 +51,7 @@ export default {
       timeLength: 24
     }
   },
-  created() {
+  created () {
     this.reset()
   },
   filters: {
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     // 播放
-    play() {
+    play () {
       if (!this.isplay && this.timeInterval === null) {
         this.timeInterval = setInterval(() => {
           this.isplay = true
@@ -74,13 +74,13 @@ export default {
       }
     },
     // 暂停
-    stop() {
+    stop () {
       this.timeInterval !== null && clearInterval(this.timeInterval)
       this.timeInterval = null
       this.isplay = false
     },
     // 初始化
-    reset() {
+    reset () {
       const currentTime = new Date().getTime()
       if (this.isContent === 'content1') {
         this.timeLength = 24
