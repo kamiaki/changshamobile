@@ -1,24 +1,12 @@
 <template>
   <div class="cs-content-warp" v-if="!isLoading">
     <!--地图-->
-    <Map2D
-      :is-content="'content2'"
-      v-if="showMap2d"
-      :data="data"
-      :data-times="dataTimes"
-      :cur-time="curTime"
-    />
-    <Map3D
-      :is-content="'content2'"
-      v-else
-      :data="data"
-      :data-times="dataTimes"
-      :cur-time="curTime"
-    />
+    <Map2D :is-content="'content2'" v-if="showMap2d" :data="data" :data-times="dataTimes" :cur-time="curTime" />
+    <Map3D :is-content="'content2'" v-else :data="data" :data-times="dataTimes" :cur-time="curTime" />
     <!--地图切换按钮-->
     <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
     <!-- 时间轴 -->
-    <LayerTimeline @getCurTime="getCurTime" />
+    <LayerTimeline :is-content="'content2'" @getCurTime="getCurTime" />
   </div>
 </template>
 <script>

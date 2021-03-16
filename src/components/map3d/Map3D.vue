@@ -1,71 +1,46 @@
 <template>
   <div class="viewer">
-    <div
-      class="fixed-top font-sm text-center bg-highlight line-height-2 text-white"
-    >
+    <div class="fixed-top font-sm text-center line-height-2 text-white">
       {{ curTime | formatTimestamp("yyyy-MM-dd hh:00:00") }}
     </div>
     <!-- 地图 -->
     <vc-viewer ref="myViewer">
       <!-- content1 产品图层 -->
-      <vc-collection-primitive
-        :show="switches.switch2_1 && isContent === 'content1'"
-      >
+      <vc-collection-primitive :show="switches.switch2_1 && isContent === 'content1'">
         <vc-collection-primitive-billboard :billboards="dataSource2_1" />
       </vc-collection-primitive>
-      <vc-collection-primitive
-        :show="switches.switch2_2 && isContent === 'content1'"
-      >
+      <vc-collection-primitive :show="switches.switch2_2 && isContent === 'content1'">
         <vc-collection-primitive-billboard :billboards="dataSource2_2" />
       </vc-collection-primitive>
-      <vc-collection-primitive
-        :show="switches.switch2_3 && isContent === 'content1'"
-      >
+      <vc-collection-primitive :show="switches.switch2_3 && isContent === 'content1'">
         <vc-collection-primitive-billboard :billboards="dataSource2_3" />
       </vc-collection-primitive>
-      <vc-collection-primitive
-        :show="switches.switch4_1 && isContent === 'content1'"
-      >
+      <vc-collection-primitive :show="switches.switch4_1 && isContent === 'content1'">
         <vc-collection-primitive-billboard :billboards="dataSource4_1" />
       </vc-collection-primitive>
-      <vc-primitive-ground
-        :show="switches.switch3_1 && isContent === 'content1'"
-        :appearance="dataSource3_1"
-      >
+      <vc-primitive-ground :show="switches.switch3_1 && isContent === 'content1'" :appearance="dataSource3_1">
         <vc-instance-geometry>
           <vc-geometry-rectangle :rectangle="rectangle" />
         </vc-instance-geometry>
       </vc-primitive-ground>
 
-      <vc-primitive-ground
-        :show="switches.switch5_1 && isContent === 'content1'"
-        :appearance="dataSource5_1"
-      >
+      <vc-primitive-ground :show="switches.switch5_1 && isContent === 'content1'" :appearance="dataSource5_1">
         <vc-instance-geometry>
           <vc-geometry-rectangle :rectangle="rectangle" />
         </vc-instance-geometry>
       </vc-primitive-ground>
 
       <!-- content2 产品图层 -->
-      <vc-collection-primitive
-        :show="switches.switch6_1 && isContent === 'content2'"
-      >
+      <vc-collection-primitive :show="switches.switch6_1 && isContent === 'content2'">
         <vc-collection-primitive-billboard :billboards="dataSource6_1" />
       </vc-collection-primitive>
-      <vc-collection-primitive
-        :show="switches.switch6_2 && isContent === 'content2'"
-      >
+      <vc-collection-primitive :show="switches.switch6_2 && isContent === 'content2'">
         <vc-collection-primitive-billboard :billboards="dataSource6_2" />
       </vc-collection-primitive>
-      <vc-collection-primitive
-        :show="switches.switch6_3 && isContent === 'content2'"
-      >
+      <vc-collection-primitive :show="switches.switch6_3 && isContent === 'content2'">
         <vc-collection-primitive-billboard :billboards="dataSource6_3" />
       </vc-collection-primitive>
-      <vc-primitive-ground
-        :show="switches.switch7_1 && isContent === 'content2'"
-        :appearance="dataSource7_1"
-      >
+      <vc-primitive-ground :show="switches.switch7_1 && isContent === 'content2'" :appearance="dataSource7_1">
         <vc-instance-geometry>
           <vc-geometry-rectangle :rectangle="rectangle" />
         </vc-instance-geometry>
@@ -80,12 +55,7 @@
       </vc-layer-imagery>
     </vc-viewer>
     <!-- 图层控制 -->
-    <LayerControl
-      :is2d="false"
-      @watchTileLayer="watchTileLayer"
-      :is-content="isContent"
-      :switches="switches"
-    />
+    <LayerControl :is2d="false" @watchTileLayer="watchTileLayer" :is-content="isContent" :switches="switches" />
     <!-- 图例 -->
     <LayerLegend :is-content="isContent" />
   </div>

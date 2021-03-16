@@ -1,40 +1,16 @@
 <template>
   <div class="fixed-bottom cs-layer-timeline">
-    <div
-      class="flex justify-center align-center mt-1 timeline-control"
-      v-if="startTime !== null"
-    >
-      <van-image
-        width="22"
-        height="22"
-        v-if="!isplay"
-        :src="playIcon"
-        @click="play"
-      />
-      <van-image
-        width="22"
-        height="22"
-        v-if="isplay"
-        :src="stopIcon"
-        @click="stop"
-      />
-      <van-image
-        width="22"
-        height="22"
-        class="ml-h"
-        :src="resetIcon"
-        @click="reset"
-      />
+    <div class="flex justify-center align-center mt-1 timeline-control" v-if="startTime !== null">
+      <van-image width="22" height="22" v-if="!isplay" :src="playIcon" @click="play" />
+      <van-image width="22" height="22" v-if="isplay" :src="stopIcon" @click="stop" />
+      <van-image width="22" height="22" class="ml-h" :src="resetIcon" @click="reset" />
       <div class="ml-5 mr-5 position-relative bg-white font-small timeline-bar">
         <div class="position-absolute timeSta">
           {{ startTime | formatTimestamp("hh:mm") }}
         </div>
-        <div
-          class="position-absolute bar"
-          :style="{
-            left: ((curTime - startTime) / stepTime) * (200 / 24) + 'px',
-          }"
-        >
+        <div class="position-absolute bar" :style="{
+            left: ((curTime - startTime) / stepTime) * (200 / (timeLength-1)) + 'px',
+          }">
           <p class="position-absolute">
             {{ curTime | formatTimestamp("hh:mm") }}
           </p>
@@ -52,7 +28,13 @@ import { formatTimestamp } from '@/utils/datetimeUtils'
 
 export default {
   name: 'LayerTimeline',
-  data () {
+  props: {
+    isContent: {
+      type: String,
+      default: ''
+    }
+  },
+  data() {
     return {
       playIcon: require('@/assets/img/layerTimeline/play.png'),
       stopIcon: require('@/assets/img/layerTimeline/stop.png'),
@@ -65,10 +47,11 @@ export default {
       stepTime: 60 * 60 * 1000, // 播放步长 60分钟
       timeInterval: null,
 
-      timeArr: []
+      timeArr: [],
+      timeLength: 24
     }
   },
-  created () {
+  created() {
     this.reset()
   },
   filters: {
@@ -76,7 +59,7 @@ export default {
   },
   methods: {
     // 播放
-    play () {
+    play() {
       if (!this.isplay && this.timeInterval === null) {
         this.timeInterval = setInterval(() => {
           this.isplay = true
@@ -91,19 +74,31 @@ export default {
       }
     },
     // 暂停
-    stop () {
+    stop() {
       this.timeInterval !== null && clearInterval(this.timeInterval)
       this.timeInterval = null
       this.isplay = false
     },
     // 初始化
-    reset () {
+    reset() {
       const currentTime = new Date().getTime()
-      this.endTime = parseInt(currentTime / this.stepTime) * this.stepTime
-      this.startTime = this.endTime - 24 * this.stepTime
-      this.curTime = this.startTime
-      for (let i = 0; i < 24; i++) {
-        this.timeArr.push(formatTimestamp(this.startTime + i * this.stepTime, 'yyyy-MM-ddThh:00:00'))
+      if (this.isContent === 'content1') {
+        this.timeLength = 24
+        this.endTime = parseInt(currentTime / this.stepTime) * this.stepTime
+        this.startTime = this.endTime - 23 * this.stepTime
+        this.curTime = this.startTime
+        for (let i = 0; i < this.timeLength; i++) {
+          this.timeArr.push(formatTimestamp(this.startTime + i * this.stepTime, 'yyyy-MM-ddThh:00:00'))
+        }
+      }
+      if (this.isContent === 'content2') {
+        this.timeLength = 2
+        this.startTime = parseInt(currentTime / this.stepTime) * this.stepTime + this.stepTime
+        this.endTime = this.startTime + 1 * this.stepTime
+        this.curTime = this.startTime
+        for (let i = 0; i < this.timeLength; i++) {
+          this.timeArr.push(formatTimestamp(this.startTime + i * this.stepTime, 'yyyy-MM-ddThh:00:00'))
+        }
       }
       this.$emit('getCurTime', [this.curTime, this.timeArr])
       this.stop()

@@ -1,23 +1,12 @@
 <template>
   <div>
-    <div
-      class="fixed-top font-sm text-center bg-highlight line-height-2 text-white"
-    >
+    <div class="fixed-top font-sm text-center line-height-2 text-white">
       {{ curTime | formatTimestamp("yyyy-MM-dd hh:00:00") }}
     </div>
     <!-- 地图 -->
-    <l-map
-      class="cs-leaflet-map"
-      ref="leafletMap"
-      @ready="initGis"
-      :options="options"
-    />
+    <l-map class="cs-leaflet-map" ref="leafletMap" @ready="initGis" :options="options" />
     <!-- 图层控制 -->
-    <LayerControl
-      @watchTileLayer="watchTileLayer"
-      :is-content="isContent"
-      :switches="switches"
-    />
+    <LayerControl @watchTileLayer="watchTileLayer" :is-content="isContent" :switches="switches" />
     <!-- 图例 -->
     <LayerLegend :is-content="isContent" />
   </div>
