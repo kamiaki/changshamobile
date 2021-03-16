@@ -2,15 +2,18 @@
   <div class="cs-statistics-warp">
     <van-nav-bar title="数据统计" left-text="" left-arrow fixed @click-left="goBack()" />
     <div class="pt-5 px-1 pb-1">
-      <van-tabs class="bg-white" type="card" background="#fff" color="#1989fa" style="margin-top: 4px" v-model="active1">
-        <van-tab title="电场和雷电数据图">
+    <van-tabs class="bg-white" type="line" background="#fff" color="#00CCFF"  style="margin-top: 4px;" line-width="0" v-model="active1">
+        <van-tab title="电场和雷电数据统计" title-style="font-weight:bold;justify-content:left;">
+          <div slot="title">
+           <van-icon name="more-o" color="#00CCFF" style="font-weight:bold"/> 电场和雷电数据统计
+          </div>
           <scatterChart :id="'scatterChart'" height="320px" width="100%" />
         </van-tab>
       </van-tabs>
 
-      <van-tabs class="mt-1 bg-white" type="card" background="#fff" color="#1989fa" v-model="active2" @change="changeLineChart">
-        <van-tab class="cccc" :title="title[0]"></van-tab>
-        <van-tab :title="title[1]"></van-tab>
+      <van-tabs class="mt-1 bg-white" background="#fff" type="line" color="#00CCFF" title-active-color="#00CCFF" v-model="active2" border=true line-width="200" @change="changeLineChart">
+        <van-tab title-style="font-weight:bold" :title="title[0]"></van-tab>
+        <van-tab title-style="font-weight:bold" :title="title[1]"></van-tab>
         <div class="font-smaller p-1">{{ title[active2] }}雷电数量统计</div>
         <lineChart :id="'lineChart'" :data="lineChartData" height="220px" width="100%" />
       </van-tabs>
@@ -61,8 +64,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.ccc {
-  background: red;
+<style lang="scss" >
+.van-ellipsis {
+    color: #fefbfb;
+  }
+
+ .van-nav-bar .van-icon {
+    color: #fefbfb;
+  }
+
+ .van-nav-bar__text {
+    color: #fefbfb;
+  }
+.van-nav-bar{
+background-image: linear-gradient(to right, #0099FF, #00CCFF);
 }
+
 </style>

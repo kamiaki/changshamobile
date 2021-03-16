@@ -65,9 +65,9 @@ export default {
         const sItem = {
           value: [item[0], item[1]],
           symbol: iconArr[item[2]],
-          symbolSize: item[2] === 0 ? [10, 10] : (item[2] === 1 ? [10, 1] : [2, 2]),
+          symbolSize: item[2] === 0 ? [13, 13] : (item[2] === 1 ? [10, 1] : [5, 5]),
           itemStyle: {
-            color: 'green'
+            color: '#0bb61f'
           }
         }
         scatterData.push(sItem)
@@ -75,7 +75,7 @@ export default {
 
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({
-        color: ['#0000fe', 'green'],
+        color: ['#0000fe', '#0bb61f'],
         backgroundColor: '#fff',
         grid: {
           left: 40,

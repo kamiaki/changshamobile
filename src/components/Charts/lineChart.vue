@@ -63,10 +63,11 @@ export default {
         grid: {
           left: 40,
           top: 25,
-          right: 20,
+          right: 38,
           bottom: 35
         },
         xAxis: {
+          name: '(时)',
           data: this.data.dataX,
           boundaryGap: false,
           axisTick: { inside: true }
@@ -80,13 +81,13 @@ export default {
         },
         series: [
           {
-            symbol: 'none',
+            // symbol: 'none',
             data: this.data.dataY1,
             type: 'line',
             smooth: true,
             lineStyle: {
-              color: '#0000fe',
-              width: 1
+              color: '#f96a0b',
+              width: 2
             }
           }
         ]
