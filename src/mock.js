@@ -32,7 +32,7 @@ Mock.mock('/mainPage/map/axiosGetElectricFieldStations', (req, res) => {
       statusStr: '停运（大于6小时无数据）'
     },
     {
-      num: 'CH010',
+      num: 'CH011',
       devicename: '岳阳站2',
       latitude: 28.9269,
       longitude: 111.6862,
@@ -203,19 +203,39 @@ Mock.mock('/mainPage/map/axiosGetElectricFieldPattern', (req, res) => {
 Mock.mock('/mainPage/map/axiosGetElectricChartData', (req, res) => {
   const data = {
     dataX: [
-      '2018-04-15 14:35'
+      '2018-04-15 14:35',
+      '2018-04-15 15:35',
+      '2018-04-15 16:35'
     ],
     dataY1: [
       [
         0,
         12
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        8
       ]
     ],
     dataY2: [
       [
-        1,
-        119.06,
+        0,
+        52.06,
         1
+      ],
+      [
+        1,
+        15.06,
+        0
+      ],
+      [
+        2,
+        25.06,
+        2
       ]
     ]
   }
@@ -227,7 +247,7 @@ Mock.mock('/mainPage/detail2/axiosGetLightningFrequencyChartTable', (req, res) =
   const data = {
     chartData: {
       dataX: [
-        '1月'
+        '10', '11', '12', '13', '14', '15', '16'
       ],
       dataY1: [
         5
@@ -235,9 +255,7 @@ Mock.mock('/mainPage/detail2/axiosGetLightningFrequencyChartTable', (req, res) =
       dataY2: [
         2
       ],
-      dataY3: [
-        7
-      ]
+      dataY3: [7, 9, 5, 4, 2, 6, 11]
     },
     tableData: [
       {

@@ -4,6 +4,7 @@
 
 <script>
 import echarts from 'echarts'
+import { formatTimestamp } from '@/utils/datetimeUtils'
 
 export default {
   props: {
@@ -22,6 +23,10 @@ export default {
     height: {
       type: String,
       default: '100%'
+    },
+    data: {
+      type: Object,
+      default () { return {} }
     }
   },
   data () {
@@ -42,20 +47,10 @@ export default {
   methods: {
     initChart () {
       const data = {
-        dataX: [],
-        dataY1: [],
-        dataY2: []
+        dataX: this.data.dataX,
+        dataY1: this.data.dataY1.reduce((p, c) => { p.push(c[1]); return p }, []),
+        dataY2: this.data.dataY2
       }
-      for (let i = 0; i <= 60 * 4; i++) {
-        data.dataX.push(i % 24 + '时')
-        data.dataY1.push(Math.floor(Math.random() * 30 - 15))
-        data.dataY2.push([
-          i,
-          Math.floor(Math.random() * 40 - 20),
-          Math.floor(Math.random() * 3)
-        ])
-      }
-
       const iconPlus = 'path://M808.22679909 477.27937673L546.71996176 477.27937673 546.71996176 215.79108495c0-19.18046157-15.52029053-34.72062327-34.72062327-34.72062328-19.11952507 0-34.68088224 15.54016171-34.68088224 34.72062328l-0.01722124 261.48829047L215.81029331 477.27937673c-19.16059171 0-34.72062327 15.56003286-34.72062327 34.72062327 0 19.18046157 15.56003286 34.71929895 34.72062327 34.71929895l261.48564185 0-0.01722124 261.4896161c0 19.15926739 15.60109821 34.72194889 34.72062327 34.72194888 19.20033275 0 34.72062327-15.56268149 34.72062328-34.72194888L546.71996176 546.71929895l261.46974493 0c19.20033275 0 34.72062327-15.53883739 34.72062327-34.71929895S827.39003941 477.27937673 808.22679909 477.27937673z'
       const iconReduce = 'path://M843.97142286 478.10202084c0 18.73933342-15.202361 33.89797916-33.91785033 33.89797916l-596.09257244 0c-18.71681363 0-33.87545937-15.15732142-33.87545938-33.89797916l0 0c0-18.71681363 15.15732142-33.89533053 33.87545938-33.89533053l596.09257244 0C828.77038615 444.20669031 843.97142286 459.38520592 843.97142286 478.10202084L843.97142286 478.10202084z'
       const iconDot = 'path://M512 610.4375a98.4375 98.4375 0 1 0 0-196.875 98.4375 98.4375 0 0 0 0 196.875z'
@@ -94,7 +89,9 @@ export default {
           },
           {
             position: 'bottom',
-            data: data.dataX,
+            data: data.dataX.map(item => {
+              return formatTimestamp(item, 'hh时')
+            }),
             boundaryGap: false,
             axisLabel: { show: true },
             axisTick: { inside: true }

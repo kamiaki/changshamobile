@@ -28,6 +28,10 @@ export default {
       default () {
         return {}
       }
+    },
+    type: {
+      type: [String, Number],
+      default: 0
     }
   },
   data () {
@@ -67,7 +71,7 @@ export default {
           bottom: 35
         },
         xAxis: {
-          name: '(时)',
+          name: this.type === 1 ? '日' : '(时)',
           data: this.data.dataX,
           boundaryGap: false,
           axisTick: { inside: true }
@@ -82,7 +86,7 @@ export default {
         series: [
           {
             // symbol: 'none',
-            data: this.data.dataY1,
+            data: this.data.dataY3,
             type: 'line',
             smooth: true,
             lineStyle: {
