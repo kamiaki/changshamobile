@@ -199,6 +199,41 @@ Mock.mock('/mainPage/map/axiosGetElectricFieldPattern', (req, res) => {
   return data
 })
 
+// 组合反射率-色斑图
+Mock.mock('/mainPage/map/axiosGetRadarPuzzle', (req, res) => {
+  const data = {
+    '2021-03-13T22:00:00': {
+      text: '组合反射率拼图',
+      url: '/common/file/getImage/8ce8f987-130a-4702-8cd3-951756f72e2a',
+      area: [
+        [
+          108.8086,
+          24.6533
+        ],
+        [
+          114.2578,
+          30.1465
+        ]
+      ]
+    },
+    '2021-03-13T23:00:00': {
+      text: '雷电密度',
+      url: '/common/file/getImage/8ce8f987-130a-4702-8cd3-951756f72e2a',
+      area: [
+        [
+          108.8086,
+          24.6533
+        ],
+        [
+          114.2578,
+          30.1465
+        ]
+      ]
+    }
+  }
+  return data
+})
+
 // 统计-电场曲线和散点图
 Mock.mock('/mainPage/map/axiosGetElectricChartData', (req, res) => {
   const data = {

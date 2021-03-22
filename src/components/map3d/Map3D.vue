@@ -78,11 +78,11 @@ export default {
     },
     data: {
       type: Object,
-      default () { return {} }
+      default() { return {} }
     },
     dataTimes: {
       type: Array,
-      default () { return [] }
+      default() { return [] }
     },
     curTime: {
       type: [Number, String],
@@ -91,7 +91,7 @@ export default {
   },
   filters: { formatTimestamp },
   components: { LayerControl, LayerLegend },
-  data () {
+  data() {
     return {
       // 地图
       Cesium: undefined,
@@ -117,14 +117,14 @@ export default {
     }
   },
   computed: {
-    switches () {
+    switches() {
       return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     },
-    changeSwitch () {
+    changeSwitch() {
       return Object.values(this.switches)
     }
   },
-  mounted () {
+  mounted() {
     // 加载框
     const loadingText = '拼命加载地图中...'
     let loadingCount = 10
@@ -169,7 +169,7 @@ export default {
     )
   },
   watch: {
-    changeSwitch () {
+    changeSwitch() {
       this.showProduct()
     },
     curTime: function (val, oldVal) {
@@ -180,11 +180,11 @@ export default {
   },
   methods: {
     // 监控地图瓦片
-    watchTileLayer (val) {
+    watchTileLayer(val) {
       this.mapStyle = val
     },
     // 设置镜头
-    setCamera () {
+    setCamera() {
       this.viewer.camera.setView({
         // 坐标位置 和 高度
         destination: this.Cesium.Cartesian3.fromDegrees(111.66, 21.58, 600000),
@@ -199,34 +199,47 @@ export default {
       })
     },
     // 设置产品
-    showProduct () {
+    showProduct() {
       // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       if (this.isContent === 'content1') {
-        this.dataSource2_2 = this.setPoints(2, 2)
-        this.dataSource2_3 = this.setPoints(2, 3)
-        this.dataSource4_1 = this.setPoints(4, 1)
+        this.switches.switch2_2 && (this.dataSource2_2 = this.setPoints(2, 2))
+        this.switches.switch2_3 && (this.dataSource2_3 = this.setPoints(2, 3))
+        this.switches.switch4_1 && (this.dataSource4_1 = this.setPoints(4, 1))
 
-        // const curList = this.data.layer5_1_Data[curTimeKey]
-        const curList = Object.entries(this.data.layer5_1_Data)[0][1]
-        this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
-        const name2 = randomFlow(1, 4, 0) // 测试用
-        this.dataSource5_1 = new Cesium.MaterialAppearance({
-          material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/timeline/layer1/${name2}.png`) } } })
-        })
+        if (this.switches.switch3_1) {
+          // const curList1 = this.data.layer3_1_Data[curTimeKey]
+          const curList1 = Object.entries(this.data.layer3_1_Data)[0][1]
+          this.rectangle = { west: curList1.area[0][0], south: curList1.area[0][1], east: curList1.area[1][0], north: curList1.area[1][1] }
+          const name1 = randomFlow(1, 4, 0) // 测试用
+          this.dataSource3_1 = new Cesium.MaterialAppearance({
+            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name1}.png`) } } })
+          })
+        }
+        if (this.switches.switch5_1) {
+          // const curList = this.data.layer5_1_Data[curTimeKey]
+          const curList = Object.entries(this.data.layer5_1_Data)[0][1]
+          this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
+          const name2 = randomFlow(1, 4, 0) // 测试用
+          this.dataSource5_1 = new Cesium.MaterialAppearance({
+            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/timeline/layer1/${name2}.png`) } } })
+          })
+        }
       }
       if (this.isContent === 'content2') {
-        // const curList = this.data.layer7_1_Data[curTimeKey]
-        const curList = Object.entries(this.data.layer7_1_Data)[0][1]
-        this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
-        const name3 = randomFlow(1, 4, 0) // 测试用
-        this.dataSource7_1 = new Cesium.MaterialAppearance({
-          material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name3}.png`) } } })
-        })
+        if (this.switches.switch7_1) {
+          // const curList = this.data.layer7_1_Data[curTimeKey]
+          const curList = Object.entries(this.data.layer7_1_Data)[0][1]
+          this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
+          const name3 = randomFlow(1, 4, 0) // 测试用
+          this.dataSource7_1 = new Cesium.MaterialAppearance({
+            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name3}.png`) } } })
+          })
+        }
       }
     },
     // 生成散点
-    setPoints (num1, num2) {
+    setPoints(num1, num2) {
       // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       const list = []

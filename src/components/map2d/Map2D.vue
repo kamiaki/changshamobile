@@ -32,11 +32,11 @@ export default {
     },
     data: {
       type: Object,
-      default () { return {} }
+      default() { return {} }
     },
     dataTimes: {
       type: Array,
-      default () { return [] }
+      default() { return [] }
     },
     curTime: {
       type: [Number, String],
@@ -45,7 +45,7 @@ export default {
   },
   filters: { formatTimestamp },
   components: { LMap, LayerControl, LayerLegend },
-  data () {
+  data() {
     return {
       // 地图
       stepKey: 1,
@@ -72,15 +72,15 @@ export default {
     }
   },
   computed: {
-    switches () {
+    switches() {
       return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     },
-    changeSwitch () {
+    changeSwitch() {
       return Object.values(this.switches)
     }
   },
   watch: {
-    changeSwitch () {
+    changeSwitch() {
       this.setProduct()
     },
     curTime: function (val, oldVal) {
@@ -91,11 +91,11 @@ export default {
   },
   methods: {
     // 监控地图瓦片
-    watchTileLayer (number) {
+    watchTileLayer(number) {
       this.leafletTileLayer.setUrl(getTilesUrl(parseInt(number)))
     },
     // 地图标记点图标
-    getIcon (type, isAcitve) {
+    getIcon(type, isAcitve) {
       const url = this.getIconUrl(type, isAcitve)
       // marker 自定义图标
       const Icon = L.icon({
@@ -107,7 +107,7 @@ export default {
       return Icon
     },
     // 初始化地图
-    async initGis () {
+    async initGis() {
       // 取出map元素
       this.leafletMap = this.$refs.leafletMap.mapObject
       const map = this.leafletMap
@@ -131,7 +131,7 @@ export default {
       this.setProduct()
     },
     // 展示隐藏产品
-    showProduct () {
+    showProduct() {
       const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       console.log(curTimeKey)
       if (this.isContent === 'content1') {
@@ -177,6 +177,17 @@ export default {
         } else {
           this.layer4_1.remove()
         }
+        // 组合反射率拼图
+        if (this.switches.switch3_1) {
+          // const curList = this.data.layer5_1_Data[curTimeKey]
+          const curList = Object.entries(this.data.layer3_1_Data)[0][1]
+          this.layer3_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+          // this.layer3_1.setUrl(require(this.picUrl + curList.url))
+          this.layer3_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
+          this.layer3_1.addTo(this.leafletMap)
+        } else {
+          this.layer3_1.remove()
+        }
         // 电场色斑图
         if (this.switches.switch5_1) {
           // const curList = this.data.layer5_1_Data[curTimeKey]
@@ -204,7 +215,7 @@ export default {
       }
     },
     // 设置产品
-    setProduct () {
+    setProduct() {
       if (this.isContent === 'content1') {
         // /////////////////////////////////////////////设备
         if (this.switches.switch2_2) {
@@ -212,6 +223,9 @@ export default {
         }
         if (this.switches.switch2_3) {
           this.layer2_3.clearLayers()
+        }
+        // /////////////////////////////////////////////组合反射率
+        if (this.switches.switch3_1) {
         }
         // /////////////////////////////////////////////雷电
         if (this.switches.switch4_1) {
