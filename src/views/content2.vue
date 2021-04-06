@@ -1,8 +1,8 @@
 <template>
   <div class="cs-content-warp" v-if="!isLoading">
     <!--地图-->
-    <Map2D :is-content="'content2'" v-if="showMap2d" :data="data" :data-times="dataTimes" :cur-time="curTime" />
-    <Map3D :is-content="'content2'" v-else :data="data" :data-times="dataTimes" :cur-time="curTime" />
+    <Map2D :is-content="'content2'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
+    <Map3D :is-content="'content2'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
     <!--地图切换按钮-->
     <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
     <!-- 时间轴 -->
@@ -21,7 +21,7 @@ import {
 
 export default {
   name: 'Content2',
-  data () {
+  data() {
     return {
       showMap2d: true,
       isLoading: true,
@@ -31,37 +31,37 @@ export default {
       provinceCode: '430000',
       stepMinute: 60,
       curTime: '', // 时间轴
-      dataTimes: []
+      dateTimes: []
     }
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },
   computed: {
-    switches () {
+    switches() {
       return this.$store.state.vuexContent2.switches
     },
-    changeSwitch () {
+    changeSwitch() {
       return Object.values(this.switches)
     }
   },
   watch: {
-    changeSwitch () {
+    changeSwitch() {
       this.getData()
     }
   },
-  async created () {
+  async created() {
     this.getData()
   },
   methods: {
     // 设置地图类别
-    getMap2d (val) {
+    getMap2d(val) {
       this.showMap2d = val
     },
     // 获取时间轴当前时间(时间戳)
-    getCurTime (val) {
+    getCurTime(val) {
       this.curTime = val[0]
       this.dateTimes = val[1]
     },
-    async getData () {
+    async getData() {
       this.isLoading = true
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       // /////////////////////////////////////////////雷达色斑图
@@ -72,7 +72,7 @@ export default {
       Toast.clear()
     },
     // content2 图层-获取预警色斑图
-    async getLayer7_1 () {
+    async getLayer7_1() {
       const { provinceCode, stepMinute, dateTimes } = this
       return new Promise((resolve, reject) => {
         axiosGetWarningProduct({ provinceCode, stepMinute, dateTimes }).then(res => {

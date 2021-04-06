@@ -1,8 +1,8 @@
 <template>
   <div class="cs-content-warp" v-if="!isLoading">
     <!--地图-->
-    <Map2D :is-content="'content1'" v-if="showMap2d" :data="data" :data-times="dataTimes" :cur-time="curTime" />
-    <Map3D :is-content="'content1'" v-else :data="data" :data-times="dataTimes" :cur-time="curTime" />
+    <Map2D :is-content="'content1'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
+    <Map3D :is-content="'content1'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
     <!--地图切换按钮-->
     <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
     <!-- 时间轴 -->
@@ -43,7 +43,7 @@ export default {
       provinceCode: '430000',
       stepMinute: 60,
       curTime: '', // 时间轴
-      dataTimes: []
+      dateTimes: []
     }
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },
@@ -133,6 +133,7 @@ export default {
     // content1 组合反射率拼图
     async getLayer3_1() {
       const { provinceCode, stepMinute, dateTimes } = this
+      console.log(dateTimes)
       return new Promise((resolve, reject) => {
         axiosGetRadarPuzzle({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('组合反射率拼图')

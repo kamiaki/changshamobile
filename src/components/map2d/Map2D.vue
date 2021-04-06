@@ -34,7 +34,7 @@ export default {
       type: Object,
       default() { return {} }
     },
-    dataTimes: {
+    dateTimes: {
       type: Array,
       default() { return [] }
     },
