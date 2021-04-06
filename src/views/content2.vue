@@ -1,10 +1,12 @@
 <template>
-  <div class="cs-content-warp" v-if="!isLoading">
-    <!--地图-->
-    <Map2D :is-content="'content2'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
-    <Map3D :is-content="'content2'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
-    <!--地图切换按钮-->
-    <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
+  <div class="cs-content-warp">
+    <div v-if="!isLoading">
+      <!--地图-->
+      <Map2D :is-content="'content2'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
+      <Map3D :is-content="'content2'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
+      <!--地图切换按钮-->
+      <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
+    </div>
     <!-- 时间轴 -->
     <LayerTimeline :is-content="'content2'" @getCurTime="getCurTime" />
   </div>
@@ -48,7 +50,7 @@ export default {
       this.getData()
     }
   },
-  async created() {
+  async mounted() {
     this.getData()
   },
   methods: {
@@ -58,6 +60,7 @@ export default {
     },
     // 获取时间轴当前时间(时间戳)
     getCurTime(val) {
+      console.log(val)
       this.curTime = val[0]
       this.dateTimes = val[1]
     },
@@ -74,6 +77,7 @@ export default {
     // content2 图层-获取预警色斑图
     async getLayer7_1() {
       const { provinceCode, stepMinute, dateTimes } = this
+      console.log(provinceCode, stepMinute, dateTimes)
       return new Promise((resolve, reject) => {
         axiosGetWarningProduct({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('预警色斑图')

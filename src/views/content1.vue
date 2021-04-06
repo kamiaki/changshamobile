@@ -1,10 +1,12 @@
 <template>
-  <div class="cs-content-warp" v-if="!isLoading">
-    <!--地图-->
-    <Map2D :is-content="'content1'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
-    <Map3D :is-content="'content1'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
-    <!--地图切换按钮-->
-    <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
+  <div class="cs-content-warp">
+    <div v-if="!isLoading">
+      <!--地图-->
+      <Map2D :is-content="'content1'" v-if="showMap2d" :data="data" :date-times="dateTimes" :cur-time="curTime" />
+      <Map3D :is-content="'content1'" v-else :data="data" :date-times="dateTimes" :cur-time="curTime" />
+      <!--地图切换按钮-->
+      <MapTabs :show-map2d="showMap2d" @sendMap2d="getMap2d" />
+    </div>
     <!-- 时间轴 -->
     <LayerTimeline :is-content="'content1'" @getCurTime="getCurTime" />
   </div>
@@ -60,7 +62,7 @@ export default {
       this.getData()
     }
   },
-  async created() {
+  async mounted() {
     this.getData()
   },
   methods: {
@@ -122,6 +124,7 @@ export default {
     // content1 图层-获取雷电散点
     async getLayer4_1() {
       const { provinceCode, stepMinute, dateTimes } = this
+      console.log(provinceCode, stepMinute, dateTimes);
       return new Promise((resolve, reject) => {
         axiosGetLightningScatter({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('雷电散点')
@@ -133,7 +136,6 @@ export default {
     // content1 组合反射率拼图
     async getLayer3_1() {
       const { provinceCode, stepMinute, dateTimes } = this
-      console.log(dateTimes)
       return new Promise((resolve, reject) => {
         axiosGetRadarPuzzle({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('组合反射率拼图')
