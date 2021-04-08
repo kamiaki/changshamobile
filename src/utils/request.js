@@ -2,7 +2,7 @@ import axios from 'axios'
 import nprogress from 'nprogress'
 import { Toast } from 'vant'
 
-console.log(process.env.VUE_APP_BASE_API)
+// console.log(process.env.VUE_APP_BASE_API)
 
 // 创建一个axios的实例
 const service = axios.create({

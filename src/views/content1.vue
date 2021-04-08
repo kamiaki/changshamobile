@@ -106,8 +106,7 @@ export default {
       return new Promise((resolve, reject) => {
         axiosGetElectricFieldStations({ provinceCode: this.provinceCode }).then(res => {
           console.log('电场设备')
-          this.data.layer2_2_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer2_2_Data = res.data, resolve())
         })
       })
     },
@@ -116,20 +115,17 @@ export default {
       return new Promise((resolve, reject) => {
         axiosGetThunderStations({ provinceCode: this.provinceCode }).then(res => {
           console.log('闪电设备')
-          this.data.layer2_3_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer2_3_Data = res.data, resolve())
         })
       })
     },
     // content1 图层-获取雷电散点
     async getLayer4_1() {
       const { provinceCode, stepMinute, dateTimes } = this
-      console.log(provinceCode, stepMinute, dateTimes);
       return new Promise((resolve, reject) => {
         axiosGetLightningScatter({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('雷电散点')
-          this.data.layer4_1_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer4_1_Data = res.data, resolve())
         })
       })
     },
@@ -139,8 +135,7 @@ export default {
       return new Promise((resolve, reject) => {
         axiosGetRadarPuzzle({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('组合反射率拼图')
-          this.data.layer3_1_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer3_1_Data = res.data, resolve())
         })
       })
     },
@@ -150,8 +145,7 @@ export default {
       return new Promise((resolve, reject) => {
         axiosGetElectricFieldPattern({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('电场色斑图')
-          this.data.layer5_1_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer5_1_Data = res.data, resolve())
         })
       })
     }

@@ -163,39 +163,40 @@ export default {
         }
         // 雷电
         if (this.switches.switch4_1) {
-          // const curList = this.data.layer4_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer4_1_Data)[0][1]
-          for (let i = 0; i < curList.length; i++) {
-            const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
-            const maker = L.marker([curList[i].latitude, curList[i].longtitude], { icon: this.getIcon(`leidian_${iconName}`) })
-            maker.on('click', function (e) {
-              maker.bindPopup('<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>').openPopup()
-            })
-            this.layer4_1.addLayer(maker)
+          if (JSON.stringify(this.data.layer4_1_Data) !== '{}') {
+            const curList = this.data.layer4_1_Data[curTimeKey]
+            for (let i = 0; i < curList.length; i++) {
+              const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
+              const maker = L.marker([curList[i].latitude, curList[i].longtitude], { icon: this.getIcon(`leidian_${iconName}`) })
+              maker.on('click', function (e) {
+                maker.bindPopup('<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>').openPopup()
+              })
+              this.layer4_1.addLayer(maker)
+            }
+            this.layer4_1.addTo(this.leafletMap)
           }
-          this.layer4_1.addTo(this.leafletMap)
         } else {
           this.layer4_1.remove()
         }
         // 组合反射率拼图
         if (this.switches.switch3_1) {
-          // const curList = this.data.layer5_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer3_1_Data)[0][1]
-          this.layer3_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-          // this.layer3_1.setUrl(require(this.picUrl + curList.url))
-          this.layer3_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
-          this.layer3_1.addTo(this.leafletMap)
+          if (JSON.stringify(this.data.layer5_1_Data) !== '{}') {
+            const curList = this.data.layer5_1_Data[curTimeKey]
+            this.layer3_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+            this.layer3_1.setUrl(require(this.picUrl + curList.url))
+            this.layer3_1.addTo(this.leafletMap)
+          }
         } else {
           this.layer3_1.remove()
         }
         // 电场色斑图
         if (this.switches.switch5_1) {
-          // const curList = this.data.layer5_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer5_1_Data)[0][1]
-          this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-          // this.layer5_1.setUrl(require(this.picUrl + curList.url))
-          this.layer5_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
-          this.layer5_1.addTo(this.leafletMap)
+          if (JSON.stringify(this.data.layer5_1_Data) !== '{}') {
+            const curList = this.data.layer5_1_Data[curTimeKey]
+            this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+            this.layer5_1.setUrl(require(this.picUrl + curList.url))
+            this.layer5_1.addTo(this.leafletMap)
+          }
         } else {
           this.layer5_1.remove()
         }
@@ -203,12 +204,12 @@ export default {
       if (this.isContent === 'content2') {
         // 雷电预警色斑图
         if (this.switches.switch7_1) {
-          // const curList = this.layer7_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer7_1_Data)[0][1]
-          this.layer7_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-          // this.layer7_1.setUrl(require(this.picUrl + curList.url))
-          this.layer7_1.setUrl(require('@/assets/carouselImg/' + randomFlow(1, 4, 0) + '.png'))
-          this.layer7_1.addTo(this.leafletMap)
+          if (JSON.stringify(this.data.layer7_1_Data) !== '{}') {
+            const curList = this.data.layer7_1_Data[curTimeKey]
+            this.layer7_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+            this.layer7_1.setUrl(require(this.picUrl + curList.url))
+            this.layer7_1.addTo(this.leafletMap)
+          }
         } else {
           this.layer7_1.remove()
         }

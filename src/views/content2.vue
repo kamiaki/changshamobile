@@ -77,12 +77,10 @@ export default {
     // content2 图层-获取预警色斑图
     async getLayer7_1() {
       const { provinceCode, stepMinute, dateTimes } = this
-      console.log(provinceCode, stepMinute, dateTimes)
       return new Promise((resolve, reject) => {
         axiosGetWarningProduct({ provinceCode, stepMinute, dateTimes }).then(res => {
           console.log('预警色斑图')
-          this.data.layer7_1_Data = res
-          resolve()
+          res.success && res.data && (this.data.layer7_1_Data = res.data, resolve())
         })
       })
     }
