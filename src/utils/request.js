@@ -6,8 +6,8 @@ console.log(process.env.VUE_APP_BASE_API)
 
 // 创建一个axios的实例
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 100000
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 60 * 1000
 })
 
 // 请求拦截: 每一次发请求都会做的事情
