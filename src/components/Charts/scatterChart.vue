@@ -44,9 +44,6 @@ export default {
       deep: true
     }
   },
-  mounted() {
-    this.initChart()
-  },
   beforeDestroy() {
     if (!this.chart) {
       return
