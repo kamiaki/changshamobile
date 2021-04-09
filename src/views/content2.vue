@@ -60,7 +60,6 @@ export default {
     },
     // 获取时间轴当前时间(时间戳)
     getCurTime(val) {
-      console.log(val)
       this.curTime = val[0]
       this.dateTimes = val[1]
     },

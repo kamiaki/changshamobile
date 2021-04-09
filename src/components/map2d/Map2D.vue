@@ -132,7 +132,7 @@ export default {
     },
     // 展示隐藏产品
     showProduct() {
-      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      let curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       console.log(curTimeKey)
       if (this.isContent === 'content1') {
         if (this.switches.switch2_2) {
@@ -164,27 +164,33 @@ export default {
         // 雷电
         if (this.switches.switch4_1) {
           if (JSON.stringify(this.data.layer4_1_Data) !== '{}') {
+            // curTimeKey = '2021-04-08T19:00:00'
             const curList = this.data.layer4_1_Data[curTimeKey]
-            for (let i = 0; i < curList.length; i++) {
-              const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
-              const maker = L.marker([curList[i].latitude, curList[i].longtitude], { icon: this.getIcon(`leidian_${iconName}`) })
-              maker.on('click', function (e) {
-                maker.bindPopup('<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>').openPopup()
-              })
-              this.layer4_1.addLayer(maker)
+            if (curList) {
+              for (let i = 0; i < curList.length; i++) {
+                const iconName = curList[i].typeName === '正闪' ? 'zs' : (curList[i].typeName === '负闪' ? 'fs' : 'ys')
+                const maker = L.marker([curList[i].latitude, curList[i].longtitude], { icon: this.getIcon(`leidian_${iconName}`) })
+                maker.on('click', function (e) {
+                  maker.bindPopup('<div>' + maker._latlng.lat + ',' + maker._latlng.lng + '</div>').openPopup()
+                })
+                this.layer4_1.addLayer(maker)
+              }
+              this.layer4_1.addTo(this.leafletMap)
             }
-            this.layer4_1.addTo(this.leafletMap)
           }
         } else {
           this.layer4_1.remove()
         }
         // 组合反射率拼图
         if (this.switches.switch3_1) {
-          if (JSON.stringify(this.data.layer5_1_Data) !== '{}') {
-            const curList = this.data.layer5_1_Data[curTimeKey]
-            this.layer3_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-            this.layer3_1.setUrl(require(this.picUrl + curList.url))
-            this.layer3_1.addTo(this.leafletMap)
+          if (JSON.stringify(this.data.layer3_1_Data) !== '{}') {
+            // curTimeKey = '2021-04-09T01:00:00'
+            const curList = this.data.layer3_1_Data[curTimeKey]
+            if (curList) {
+              this.layer3_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+              this.layer3_1.setUrl(this.picUrl + curList.url)
+              this.layer3_1.addTo(this.leafletMap)
+            }
           }
         } else {
           this.layer3_1.remove()
@@ -192,10 +198,13 @@ export default {
         // 电场色斑图
         if (this.switches.switch5_1) {
           if (JSON.stringify(this.data.layer5_1_Data) !== '{}') {
+            // curTimeKey = '2021-04-09T00:00:00'
             const curList = this.data.layer5_1_Data[curTimeKey]
-            this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-            this.layer5_1.setUrl(require(this.picUrl + curList.url))
-            this.layer5_1.addTo(this.leafletMap)
+            if (curList) {
+              this.layer5_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+              this.layer5_1.setUrl(this.picUrl + curList.url)
+              this.layer5_1.addTo(this.leafletMap)
+            }
           }
         } else {
           this.layer5_1.remove()
@@ -206,9 +215,11 @@ export default {
         if (this.switches.switch7_1) {
           if (JSON.stringify(this.data.layer7_1_Data) !== '{}') {
             const curList = this.data.layer7_1_Data[curTimeKey]
-            this.layer7_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
-            this.layer7_1.setUrl(require(this.picUrl + curList.url))
-            this.layer7_1.addTo(this.leafletMap)
+            if (curList) {
+              this.layer7_1.setBounds([[curList.area[1][1], curList.area[0][0]], [curList.area[0][1], curList.area[1][0]]])
+              this.layer7_1.setUrl(this.picUrl + curList.url)
+              this.layer7_1.addTo(this.leafletMap)
+            }
           }
         } else {
           this.layer7_1.remove()

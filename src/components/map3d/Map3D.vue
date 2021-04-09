@@ -113,7 +113,9 @@ export default {
       dataSource6_1: [], // 预警雷达---散点---!!!暂时不做
       dataSource6_2: [], // 预警电场---散点---!!!暂时不做
       dataSource6_3: [], // 预警闪电---散点---!!!暂时不做
-      dataSource7_1: undefined // 雷电预警---贴色斑图   √
+      dataSource7_1: undefined, // 雷电预警---贴色斑图   √
+      // 图片拼接地址
+      picUrl: process.env.VUE_APP_BASE_API
     }
   },
   computed: {
@@ -200,7 +202,7 @@ export default {
     },
     // 设置产品
     showProduct() {
-      // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      let curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       if (this.isContent === 'content1') {
         this.switches.switch2_2 && (this.dataSource2_2 = this.setPoints(2, 2))
@@ -208,39 +210,41 @@ export default {
         this.switches.switch4_1 && (this.dataSource4_1 = this.setPoints(4, 1))
 
         if (this.switches.switch3_1) {
-          // const curList1 = this.data.layer3_1_Data[curTimeKey]
-          const curList1 = Object.entries(this.data.layer3_1_Data)[0][1]
-          this.rectangle = { west: curList1.area[0][0], south: curList1.area[0][1], east: curList1.area[1][0], north: curList1.area[1][1] }
-          const name1 = randomFlow(1, 4, 0) // 测试用
-          this.dataSource3_1 = new Cesium.MaterialAppearance({
-            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name1}.png`) } } })
-          })
+          // curTimeKey = '2021-04-09T01:00:00'
+          const curList1 = this.data.layer3_1_Data[curTimeKey]
+          if (curList1) {
+            this.rectangle = { west: curList1.area[0][0], south: curList1.area[0][1], east: curList1.area[1][0], north: curList1.area[1][1] }
+            this.dataSource3_1 = new Cesium.MaterialAppearance({
+              material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: this.picUrl + curList1.url } } })
+            })
+          }
         }
         if (this.switches.switch5_1) {
-          // const curList = this.data.layer5_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer5_1_Data)[0][1]
-          this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
-          const name2 = randomFlow(1, 4, 0) // 测试用
-          this.dataSource5_1 = new Cesium.MaterialAppearance({
-            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/timeline/layer1/${name2}.png`) } } })
-          })
+          // curTimeKey = '2021-04-09T00:00:00'
+          const curList = this.data.layer5_1_Data[curTimeKey]
+          if (curList) {
+            this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
+            this.dataSource5_1 = new Cesium.MaterialAppearance({
+              material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: this.picUrl + curList.url } } })
+            })
+          }
         }
       }
       if (this.isContent === 'content2') {
         if (this.switches.switch7_1) {
-          // const curList = this.data.layer7_1_Data[curTimeKey]
-          const curList = Object.entries(this.data.layer7_1_Data)[0][1]
-          this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
-          const name3 = randomFlow(1, 4, 0) // 测试用
-          this.dataSource7_1 = new Cesium.MaterialAppearance({
-            material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: require(`@/assets/carouselImg/${name3}.png`) } } })
-          })
+          const curList = this.data.layer7_1_Data[curTimeKey]
+          if (curList) {
+            this.rectangle = { west: curList.area[0][0], south: curList.area[0][1], east: curList.area[1][0], north: curList.area[1][1] }
+            this.dataSource7_1 = new Cesium.MaterialAppearance({
+              material: new Cesium.Material({ fabric: { type: 'Image', uniforms: { image: this.picUrl + curList.url } } })
+            })
+          }
         }
       }
     },
     // 生成散点
     setPoints(num1, num2) {
-      // const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       const list = []
       let url = null; let scale = 0.2; let data = null
@@ -256,26 +260,28 @@ export default {
       // /////////////////////////////////////////////雷电散点
       if (num1 === 4 && num2 === 1) {
         scale = 0.4
-        // data = this.data.layer4_1_Data[curTimeKey]
+        data = this.data.layer4_1_Data[curTimeKey]
         data = Object.entries(this.data.layer4_1_Data)[0][1]
       }
-      for (let i = 0; i < data.length; i++) {
-        if (num1 === 2 && num2 === 2) {
-          url = this.getIconUrl('dianchang', data[i].status === '1')
+      if (data && data.length) {
+        for (let i = 0; i < data.length; i++) {
+          if (num1 === 2 && num2 === 2) {
+            url = this.getIconUrl('dianchang', data[i].status === '1')
+          }
+          if (num1 === 2 && num2 === 3) {
+            url = this.getIconUrl('shandian', data[i].status === '1')
+          }
+          if (num1 === 4 && num2 === 1) {
+            const iconName = data[i].typeName === '正闪' ? 'zs' : (data[i].typeName === '负闪' ? 'fs' : 'ys')
+            url = this.getIconUrl(`leidian_${iconName}`)
+          }
+          const item = {
+            position: { lng: (num1 === 4 && num2 === 1) ? data[i].longtitude : data[i].longitude, lat: data[i].latitude },
+            image: url,
+            scale: scale
+          }
+          list.push(item)
         }
-        if (num1 === 2 && num2 === 3) {
-          url = this.getIconUrl('shandian', data[i].status === '1')
-        }
-        if (num1 === 4 && num2 === 1) {
-          const iconName = data[i].typeName === '正闪' ? 'zs' : (data[i].typeName === '负闪' ? 'fs' : 'ys')
-          url = this.getIconUrl(`leidian_${iconName}`)
-        }
-        const item = {
-          position: { lng: (num1 === 4 && num2 === 1) ? data[i].longtitude : data[i].longitude, lat: data[i].latitude },
-          image: url,
-          scale: scale
-        }
-        list.push(item)
       }
       return list
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="cs-statistics-warp" v-if="!isLoading">
+  <div class="cs-statistics-warp">
     <van-nav-bar title="数据统计" left-text="" left-arrow fixed @click-left="goBack()" />
     <div class="pt-5 px-1 pb-1">
       <van-field v-if="columns.length" readonly clickable label="选择站点：" :value="station" placeholder="选择站点" @click="showPicker = true" />
@@ -40,9 +40,8 @@ import { formatTimestamp } from '@/utils/datetimeUtils'
 
 export default {
   name: 'statistics',
-  data () {
+  data() {
     return {
-      isLoading: true,
       selectIndex: '',
       station: '',
       stationId: '',
@@ -57,62 +56,64 @@ export default {
     }
   },
   components: { scatterChart, lineChart },
-  created () {
+  created() {
     const currentTime = new Date().getTime()
     this.dateValue = formatTimestamp(currentTime, 'yyyy-MM-ddThh:00:00.000Z')
     this.init(true)
   },
   methods: {
     // 页面初始化
-    async init (isInit) {
-      this.isLoading = true
+    async init(isInit) {
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       isInit && await this.getStationList()
       await this.getScatterChart()
       await this.getLineChart()
-      this.isLoading = false
       Toast.clear()
     },
     // 获取站点列表
-    async getStationList () {
+    async getStationList() {
       return new Promise((resolve, reject) => {
-        axiosGetElectricFieldStations().then(res => {
-          if (res && res.length) {
-            this.columns = res
+        axiosGetElectricFieldStations({ provinceCode: "" }).then(res => {
+          if (res.success && res.data) {
+            this.columns = res.data
             this.selectIndex = 0
-            this.stationId = res[0].num
-            this.station = res[0].devicename
+            this.stationId = this.columns[0].num
+            this.station = this.columns[0].devicename
+            resolve()
           }
-          resolve()
         })
       })
     },
     // 获取电场曲线和电场散点
-    async getScatterChart () {
+    async getScatterChart() {
       return new Promise((resolve, reject) => {
         axiosGetElectricChartData({
           dateValue: this.dateValue, provinceCode: 430000, station: this.stationId
         }).then(res => {
           console.log('电场曲线和电场散点')
-          res && (this.scatterData = res)
-          resolve()
+          if (res.success && res.data) {
+            this.scatterData = res.data
+            resolve()
+          }
         })
       })
     },
     // 获取24小时，近7天雷电数量
-    async getLineChart () {
+    async getLineChart() {
       return new Promise((resolve, reject) => {
         axiosGetLightningFrequencyChartTable({
           dateValue: this.dateValue, provinceCode: 430000, dateType: (this.active2 === 1 ? 'week' : 'day')
         }).then(res => {
           console.log('24小时，近7天雷电数量')
-          res && res.chartData && (this.lineChartData = res.chartData)
-          resolve()
+          if (res.success && res.data) {
+            this.lineChartData = res.data.chartData
+            resolve()
+          }
         })
       })
     },
     // 选择站点
-    onConfirm (item) {
+    onConfirm(item) {
       this.station = item.devicename
       this.stationId = item.num
       this.selectIndex = this.columns.findIndex(item => item.num === this.stationId)
@@ -120,15 +121,13 @@ export default {
       this.init(false)
     },
     // 返回
-    goBack () {
+    goBack() {
       this.$router.go(-1)
     },
     // 切换标签 生成折线图数据
-    async changeLineChart () {
-      this.isLoading = true
+    async changeLineChart() {
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       await this.getLineChart()
-      this.isLoading = false
       Toast.clear()
     }
   }

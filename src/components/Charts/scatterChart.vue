@@ -26,18 +26,28 @@ export default {
     },
     data: {
       type: Object,
-      default () { return {} }
+      default() { return {} }
     }
   },
-  data () {
+  data() {
     return {
       chart: null
     }
   },
-  mounted () {
+  watch: {
+    data: {
+      handler(val, oldVal) {
+        if (val !== oldVal) {
+          this.initChart()
+        }
+      },
+      deep: true
+    }
+  },
+  mounted() {
     this.initChart()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (!this.chart) {
       return
     }
@@ -45,10 +55,10 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart () {
+    initChart() {
       const data = {
         dataX: this.data.dataX,
-        dataY1: this.data.dataY1.reduce((p, c) => { p.push(c[1]); return p }, []),
+        dataY1: this.data.dataY1.reduce((p, c) => { p.push(c[1] ? c[1] : null); return p }, []),
         dataY2: this.data.dataY2
       }
       const iconPlus = 'path://M808.22679909 477.27937673L546.71996176 477.27937673 546.71996176 215.79108495c0-19.18046157-15.52029053-34.72062327-34.72062327-34.72062328-19.11952507 0-34.68088224 15.54016171-34.68088224 34.72062328l-0.01722124 261.48829047L215.81029331 477.27937673c-19.16059171 0-34.72062327 15.56003286-34.72062327 34.72062327 0 19.18046157 15.56003286 34.71929895 34.72062327 34.71929895l261.48564185 0-0.01722124 261.4896161c0 19.15926739 15.60109821 34.72194889 34.72062327 34.72194888 19.20033275 0 34.72062327-15.56268149 34.72062328-34.72194888L546.71996176 546.71929895l261.46974493 0c19.20033275 0 34.72062327-15.53883739 34.72062327-34.71929895S827.39003941 477.27937673 808.22679909 477.27937673z'
@@ -90,7 +100,7 @@ export default {
           {
             position: 'bottom',
             data: data.dataX.map(item => {
-              return formatTimestamp(item, 'hh时')
+              return formatTimestamp(item, 'hh:mm')
             }),
             boundaryGap: false,
             axisLabel: { show: true },
