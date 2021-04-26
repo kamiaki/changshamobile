@@ -4,7 +4,7 @@
       <van-list v-if="switches[item.switch]">
         <van-cell class="cs-cell text-center" :title="item.title" />
         <van-cell v-if="item.unit" class="cs-cell text-center" :title="item.unit" />
-        <van-cell class="cs-cell text-center" v-for="item in item.data" :key="item[0]" :style="{ background: item[2] }" :title="getRangeText(item[0], item[1])" />
+        <van-cell class="cs-cell text-center" v-for="i in item.data" :key="i[0]" :style="{ background: i[2] }" :title="getRangeText(item.title,i[0], i[1])" />
       </van-list>
     </div>
   </div>
@@ -19,7 +19,7 @@ export default {
       default: ''
     }
   },
-  data() {
+  data () {
     const content1List = [
       {
         title: '组合反射',
@@ -59,24 +59,33 @@ export default {
           [2, 3, 'rgba(20,48,253,0.1666)'],
           [1, 2, 'rgba(20,48,253,0.0833)'],
           [-999, 1, 'rgba(20,48,253,0)']
-        ].reverse()
-      }
+        ]
+      },
+      {
+        title: '雷电',
+        switch: 'switch4_1',
+        unit: '',
+        data: [
+          ['+', '正闪', '#9dc64e'],
+          ['-', '负闪', '#b81319'],
+          ['·', '云闪', '#e0d394'],
+        ]
+      },
     ]
     const content2List = [{
       title: '雷电预警',
       switch: 'switch7_1',
-      unit: '分钟',
+      unit: '%',
       data: [
-        [0, 6, 'rgb(229,19,102)'],
-        [6, 12, 'rgb(218,26,144)'],
-        [12, 18, 'rgb(206,33,186)'],
-        [18, 24, 'rgb(164,35,208)'],
-        [24, 30, 'rgb(108,34,221)'],
-        [30, 36, 'rgb(51,33,234)'],
-        [36, 42, 'rgb(14,54,242)'],
-        [42, 48, 'rgb(14,116,242)'],
-        [48, 54, 'rgb(14,180,242)'],
-        [54, 60, 'rgb(14,242,242)']
+        [80, 90, 'rgba(255,8,5,1)'],
+        [70, 80, 'rgba(255,8,5,0.88)'],
+        [60, 70, 'rgba(255,8,5,0.77)'],
+        [50, 60, 'rgba(255,8,5,0.66)'],
+        [40, 50, 'rgba(255,8,5,0.55)'],
+        [30, 40, 'rgba(255,8,5,0.44)'],
+        [20, 30, 'rgba(255,8,5,0.33)'],
+        [10, 20, 'rgba(255,8,5,0.22)'],
+        [0, 10, 'rgba(255,8,5,0.11)'],
       ]
     }]
     return {
@@ -85,35 +94,41 @@ export default {
       legendList: []
     }
   },
-  created() {
+  created () {
     this.legendList = (this.isContent === 'content1' ? this.content1List : this.content2List)
   },
   watch: {
-    isContent(val, oldVal) {
+    isContent (val, oldVal) {
       if (val !== oldVal) { this.legendList = (this.isContent === 'content1' ? this.content1List : this.content2List) }
     }
   },
   computed: {
-    switches() {
+    switches () {
       return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     }
   },
   methods: {
     // 图例文字计算规则
-    getRangeText(min, max) {
-      const arr = []
-      arr[0] = min === -999 ? '' : min
-      arr[1] = '~'
-      arr[2] = max === 999 ? '' : max
-      if (arr[0] === '') {
-        arr[1] = '<'
+    getRangeText (title, min, max) {
+      console.log(title)
+      if (title !== '雷电') {
+        const arr = []
+        arr[0] = min === -999 ? '' : min
+        arr[1] = '~'
+        arr[2] = max === 999 ? '' : max
+        if (arr[0] === '') {
+          arr[1] = '<'
+        }
+        if (arr[2] === '') {
+          arr[1] = '>'
+          arr[2] = arr[0]
+          arr[0] = ''
+        }
+        return arr.join('')
+      } else {
+        return `${min} (${max})`
       }
-      if (arr[2] === '') {
-        arr[1] = '>'
-        arr[2] = arr[0]
-        arr[0] = ''
-      }
-      return arr.join('')
+
     }
   }
 }
@@ -127,6 +142,7 @@ export default {
   transform: scale(0.8);
   transform-origin: left bottom;
   .van-list {
+    background-color: #fff;
     .van-cell::after {
       display: none;
     }
