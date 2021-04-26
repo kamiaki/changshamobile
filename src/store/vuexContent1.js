@@ -15,13 +15,13 @@ const vuexContent1 = {
     }
   },
   mutations: {
-    setSwitches(state, data) {
+    setSwitches (state, data) {
       const propName = `switch${data[0]}_${data[1]}`
       state.switches[propName] = !state.switches[propName]
     }
   },
   actions: {
-    switchesAction({ commit }, data) {
+    switchesAction ({ commit }, data) {
       commit('setSwitches', data)
     }
   }

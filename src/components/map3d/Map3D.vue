@@ -78,11 +78,11 @@ export default {
     },
     data: {
       type: Object,
-      default() { return {} }
+      default () { return {} }
     },
     dateTimes: {
       type: Array,
-      default() { return [] }
+      default () { return [] }
     },
     curTime: {
       type: [Number, String],
@@ -91,7 +91,7 @@ export default {
   },
   filters: { formatTimestamp },
   components: { LayerControl, LayerLegend },
-  data() {
+  data () {
     return {
       // 地图
       Cesium: undefined,
@@ -119,14 +119,14 @@ export default {
     }
   },
   computed: {
-    switches() {
+    switches () {
       return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     },
-    changeSwitch() {
+    changeSwitch () {
       return Object.values(this.switches)
     }
   },
-  mounted() {
+  mounted () {
     // 加载框
     const loadingText = '拼命加载地图中...'
     let loadingCount = 10
@@ -171,7 +171,7 @@ export default {
     )
   },
   watch: {
-    changeSwitch() {
+    changeSwitch () {
       this.showProduct()
     },
     curTime: function (val, oldVal) {
@@ -182,11 +182,11 @@ export default {
   },
   methods: {
     // 监控地图瓦片
-    watchTileLayer(val) {
+    watchTileLayer (val) {
       this.mapStyle = val
     },
     // 设置镜头
-    setCamera() {
+    setCamera () {
       this.viewer.camera.setView({
         // 坐标位置 和 高度
         destination: this.Cesium.Cartesian3.fromDegrees(111.66, 21.58, 600000),
@@ -201,8 +201,8 @@ export default {
       })
     },
     // 设置产品
-    showProduct() {
-      let curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+    showProduct () {
+      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       if (this.isContent === 'content1') {
         this.switches.switch2_2 && (this.dataSource2_2 = this.setPoints(2, 2))
@@ -243,7 +243,7 @@ export default {
       }
     },
     // 生成散点
-    setPoints(num1, num2) {
+    setPoints (num1, num2) {
       const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       // console.log(curTimeKey)
       const list = []

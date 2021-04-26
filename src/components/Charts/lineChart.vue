@@ -25,7 +25,7 @@ export default {
     },
     data: {
       type: Object,
-      default() {
+      default () {
         return {}
       }
     },
@@ -34,14 +34,14 @@ export default {
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
   watch: {
     data: {
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         if (val !== oldVal) {
           this.initChart()
         }
@@ -49,7 +49,7 @@ export default {
       deep: true
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -57,7 +57,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       this.chart = echarts.init(document.getElementById(this.id))
       this.chart.setOption({
         backgroundColor: '#fff',

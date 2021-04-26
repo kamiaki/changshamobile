@@ -23,7 +23,7 @@ import {
 
 export default {
   name: 'Content2',
-  data() {
+  data () {
     return {
       showMap2d: true,
       isLoading: true,
@@ -38,32 +38,32 @@ export default {
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },
   computed: {
-    switches() {
+    switches () {
       return this.$store.state.vuexContent2.switches
     },
-    changeSwitch() {
+    changeSwitch () {
       return Object.values(this.switches)
     }
   },
   watch: {
-    changeSwitch() {
+    changeSwitch () {
       this.getData()
     }
   },
-  async mounted() {
+  async mounted () {
     this.getData()
   },
   methods: {
     // 设置地图类别
-    getMap2d(val) {
+    getMap2d (val) {
       this.showMap2d = val
     },
     // 获取时间轴当前时间(时间戳)
-    getCurTime(val) {
+    getCurTime (val) {
       this.curTime = val[0]
       this.dateTimes = val[1]
     },
-    async getData() {
+    async getData () {
       this.isLoading = true
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       // /////////////////////////////////////////////雷达色斑图
@@ -74,7 +74,7 @@ export default {
       Toast.clear()
     },
     // content2 图层-获取预警色斑图
-    async getLayer7_1() {
+    async getLayer7_1 () {
       const { provinceCode, stepMinute, dateTimes } = this
       return new Promise((resolve, reject) => {
         axiosGetWarningProduct({ provinceCode, stepMinute, dateTimes }).then(res => {

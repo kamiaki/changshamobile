@@ -40,7 +40,7 @@ import { formatTimestamp } from '@/utils/datetimeUtils'
 
 export default {
   name: 'statistics',
-  data() {
+  data () {
     return {
       selectIndex: '',
       station: '',
@@ -56,14 +56,14 @@ export default {
     }
   },
   components: { scatterChart, lineChart },
-  created() {
+  created () {
     const currentTime = new Date().getTime()
     this.dateValue = formatTimestamp(currentTime, 'yyyy-MM-ddThh:00:00.000Z')
     this.init(true)
   },
   methods: {
     // 页面初始化
-    async init(isInit) {
+    async init (isInit) {
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       isInit && await this.getStationList()
       await this.getScatterChart()
@@ -71,9 +71,9 @@ export default {
       Toast.clear()
     },
     // 获取站点列表
-    async getStationList() {
+    async getStationList () {
       return new Promise((resolve, reject) => {
-        axiosGetElectricFieldStations({ provinceCode: "" }).then(res => {
+        axiosGetElectricFieldStations({ provinceCode: '' }).then(res => {
           if (res.success && res.data) {
             this.columns = res.data
             this.selectIndex = 0
@@ -85,7 +85,7 @@ export default {
       })
     },
     // 获取电场曲线和电场散点
-    async getScatterChart() {
+    async getScatterChart () {
       return new Promise((resolve, reject) => {
         axiosGetElectricChartData({
           dateValue: this.dateValue, provinceCode: 430000, station: this.stationId
@@ -99,7 +99,7 @@ export default {
       })
     },
     // 获取24小时，近7天雷电数量
-    async getLineChart() {
+    async getLineChart () {
       return new Promise((resolve, reject) => {
         axiosGetLightningFrequencyChartTable({
           dateValue: this.dateValue, provinceCode: 430000, dateType: (this.active2 === 1 ? 'week' : 'day')
@@ -113,7 +113,7 @@ export default {
       })
     },
     // 选择站点
-    onConfirm(item) {
+    onConfirm (item) {
       this.station = item.devicename
       this.stationId = item.num
       this.selectIndex = this.columns.findIndex(item => item.num === this.stationId)
@@ -121,11 +121,11 @@ export default {
       this.init(false)
     },
     // 返回
-    goBack() {
+    goBack () {
       this.$router.go(-1)
     },
     // 切换标签 生成折线图数据
-    async changeLineChart() {
+    async changeLineChart () {
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       await this.getLineChart()
       Toast.clear()

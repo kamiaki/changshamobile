@@ -26,17 +26,17 @@ export default {
     },
     data: {
       type: Object,
-      default() { return {} }
+      default () { return {} }
     }
   },
-  data() {
+  data () {
     return {
       chart: null
     }
   },
   watch: {
     data: {
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         if (val !== oldVal) {
           this.initChart()
         }
@@ -44,7 +44,7 @@ export default {
       deep: true
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     if (!this.chart) {
       return
     }
@@ -52,7 +52,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart() {
+    initChart () {
       const data = {
         dataX: this.data.dataX,
         dataY1: this.data.dataY1.reduce((p, c) => { p.push(c[1] ? c[1] : null); return p }, []),

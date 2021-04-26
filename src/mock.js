@@ -1,5 +1,6 @@
 // 引入mockjs
 const Mock = require('mockjs')
+const success = true
 
 // 设备-电场
 Mock.mock('/mainPage/map/axiosGetElectricFieldStations', (req, res) => {
@@ -59,7 +60,7 @@ Mock.mock('/mainPage/map/axiosGetElectricFieldStations', (req, res) => {
       statusStr: '停运（大于6小时无数据）'
     }
   ]
-  return data
+  return { success, data }
 })
 
 // 设备-闪电
@@ -104,7 +105,7 @@ Mock.mock('/mainPage/map/axiosGetThunderStations', (req, res) => {
       statusStr: '正常'
     }
   ]
-  return data
+  return { success, data }
 })
 
 // 雷电-散点
@@ -161,7 +162,7 @@ Mock.mock('/mainPage/map/axiosGetLightningScatter', (req, res) => {
       }
     ]
   }
-  return data
+  return { success, data }
 })
 
 // 电场-色斑图
@@ -196,7 +197,7 @@ Mock.mock('/mainPage/map/axiosGetElectricFieldPattern', (req, res) => {
       ]
     }
   }
-  return data
+  return { success, data }
 })
 
 // 组合反射率-色斑图
@@ -231,7 +232,7 @@ Mock.mock('/mainPage/map/axiosGetRadarPuzzle', (req, res) => {
       ]
     }
   }
-  return data
+  return { success, data }
 })
 
 // 统计-电场曲线和散点图
@@ -274,7 +275,7 @@ Mock.mock('/mainPage/map/axiosGetElectricChartData', (req, res) => {
       ]
     ]
   }
-  return data
+  return { success, data }
 })
 
 // 统计-雷电数量
@@ -304,7 +305,7 @@ Mock.mock('/mainPage/detail2/axiosGetLightningFrequencyChartTable', (req, res) =
       }
     ]
   }
-  return data
+  return { success, data }
 })
 
 // 预警-预警色斑图
@@ -339,5 +340,5 @@ Mock.mock('/warning/map/axiosGetWarningProduct', (req, res) => {
       ]
     }
   }
-  return data
+  return { success, data }
 })

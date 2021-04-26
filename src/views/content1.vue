@@ -27,7 +27,7 @@ import {
 
 export default {
   name: 'Content1',
-  data() {
+  data () {
     return {
       showMap2d: true,
       isLoading: true,
@@ -50,33 +50,33 @@ export default {
   },
   components: { Map2D, Map3D, MapTabs, LayerTimeline },
   computed: {
-    switches() {
+    switches () {
       return this.$store.state.vuexContent1.switches
     },
-    changeSwitch() {
+    changeSwitch () {
       return Object.values(this.switches)
     }
   },
   watch: {
-    changeSwitch() {
+    changeSwitch () {
       this.getData()
     }
   },
-  async mounted() {
+  async mounted () {
     this.getData()
   },
   methods: {
     // 设置地图类别
-    getMap2d(val) {
+    getMap2d (val) {
       this.showMap2d = val
     },
     // 获取时间轴当前时间(时间戳)
-    getCurTime(val) {
+    getCurTime (val) {
       this.curTime = val[0]
       this.dateTimes = val[1]
     },
     // 加载页面数据
-    async getData() {
+    async getData () {
       this.isLoading = true
       Toast.loading({ duration: 0, message: '加载中...', forbidClick: true })
       // /////////////////////////////////////////////设备
@@ -102,7 +102,7 @@ export default {
       Toast.clear()
     },
     // content1 图层-获取电场设备
-    async getLayer2_2() {
+    async getLayer2_2 () {
       return new Promise((resolve, reject) => {
         axiosGetElectricFieldStations({ provinceCode: this.provinceCode }).then(res => {
           console.log('电场设备')
@@ -111,7 +111,7 @@ export default {
       })
     },
     // content1 图层-获取闪电设备
-    async getLayer2_3() {
+    async getLayer2_3 () {
       return new Promise((resolve, reject) => {
         axiosGetThunderStations({ provinceCode: this.provinceCode }).then(res => {
           console.log('闪电设备')
@@ -120,7 +120,7 @@ export default {
       })
     },
     // content1 图层-获取雷电散点
-    async getLayer4_1() {
+    async getLayer4_1 () {
       const { provinceCode, stepMinute, dateTimes } = this
       return new Promise((resolve, reject) => {
         axiosGetLightningScatter({ provinceCode, stepMinute, dateTimes }).then(res => {
@@ -130,7 +130,7 @@ export default {
       })
     },
     // content1 组合反射率拼图
-    async getLayer3_1() {
+    async getLayer3_1 () {
       const { provinceCode, stepMinute, dateTimes } = this
       return new Promise((resolve, reject) => {
         axiosGetRadarPuzzle({ provinceCode, stepMinute, dateTimes }).then(res => {
@@ -140,7 +140,7 @@ export default {
       })
     },
     // content1 电场色斑图
-    async getLayer5_1() {
+    async getLayer5_1 () {
       const { provinceCode, stepMinute, dateTimes } = this
       return new Promise((resolve, reject) => {
         axiosGetElectricFieldPattern({ provinceCode, stepMinute, dateTimes }).then(res => {

@@ -32,11 +32,11 @@ export default {
     },
     data: {
       type: Object,
-      default() { return {} }
+      default () { return {} }
     },
     dateTimes: {
       type: Array,
-      default() { return [] }
+      default () { return [] }
     },
     curTime: {
       type: [Number, String],
@@ -45,7 +45,7 @@ export default {
   },
   filters: { formatTimestamp },
   components: { LMap, LayerControl, LayerLegend },
-  data() {
+  data () {
     return {
       // 地图
       stepKey: 1,
@@ -72,15 +72,15 @@ export default {
     }
   },
   computed: {
-    switches() {
+    switches () {
       return this.isContent === 'content1' ? this.$store.state.vuexContent1.switches : this.$store.state.vuexContent2.switches
     },
-    changeSwitch() {
+    changeSwitch () {
       return Object.values(this.switches)
     }
   },
   watch: {
-    changeSwitch() {
+    changeSwitch () {
       this.setProduct()
     },
     curTime: function (val, oldVal) {
@@ -91,11 +91,11 @@ export default {
   },
   methods: {
     // 监控地图瓦片
-    watchTileLayer(number) {
+    watchTileLayer (number) {
       this.leafletTileLayer.setUrl(getTilesUrl(parseInt(number)))
     },
     // 地图标记点图标
-    getIcon(type, isAcitve) {
+    getIcon (type, isAcitve) {
       const url = this.getIconUrl(type, isAcitve)
       // marker 自定义图标
       const Icon = L.icon({
@@ -107,7 +107,7 @@ export default {
       return Icon
     },
     // 初始化地图
-    async initGis() {
+    async initGis () {
       // 取出map元素
       this.leafletMap = this.$refs.leafletMap.mapObject
       const map = this.leafletMap
@@ -131,8 +131,8 @@ export default {
       this.setProduct()
     },
     // 展示隐藏产品
-    showProduct() {
-      let curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
+    showProduct () {
+      const curTimeKey = formatTimestamp(this.curTime, 'yyyy-MM-ddThh:00:00')
       console.log(curTimeKey)
       if (this.isContent === 'content1') {
         if (this.switches.switch2_2) {
@@ -227,7 +227,7 @@ export default {
       }
     },
     // 设置产品
-    setProduct() {
+    setProduct () {
       if (this.isContent === 'content1') {
         // /////////////////////////////////////////////设备
         if (this.switches.switch2_2) {
