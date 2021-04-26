@@ -111,7 +111,7 @@ Mock.mock('/mainPage/map/axiosGetThunderStations', (req, res) => {
 // 雷电-散点
 Mock.mock('/mainPage/map/axiosGetLightningScatter', (req, res) => {
   const data = {
-    '2021-03-13T22:00:00': [
+    '2021-04-25T23:00:00': [
       {
         id: 921771,
         longtitude: 113.0712,
@@ -132,11 +132,11 @@ Mock.mock('/mainPage/map/axiosGetLightningScatter', (req, res) => {
         height: 2.21,
         flashflag: null,
         inputtime: '2020-01- 21T16:41:11.000+00:00',
-        typeName: '负闪',
+        typeName: '云闪',
         polarityType: '2'
       }
     ],
-    '2021-03-13T23:00:00': [
+    '2021-04-25T24:00:00': [
       {
         id: 921771,
         longtitude: 113.0712,

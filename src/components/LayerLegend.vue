@@ -4,7 +4,14 @@
       <van-list v-if="switches[item.switch]">
         <van-cell class="cs-cell text-center" :title="item.title" />
         <van-cell v-if="item.unit" class="cs-cell text-center" :title="item.unit" />
-        <van-cell class="cs-cell text-center" v-for="i in item.data" :key="i[0]" :style="{ background: i[2] }" :title="getRangeText(item.title,i[0], i[1])" />
+        <template v-if="item.title!=='雷电'">
+          <van-cell class="cs-cell text-center" v-for="i in item.data" :key="i[0]" :style="{ background: i[2] }" :title="getRangeText(item.title,i[0], i[1])" />
+        </template>
+        <template v-else>
+          <van-cell class="cs-cell text-center cs-cell2" v-for="i in item.data" :key="i[0]" :title="getRangeText(item.title,i[0], i[1])">
+            <van-image width="20" height="20" :src="i[0]==='zs'?zs:(i[0]==='fs'?fs:ys)" />
+          </van-cell>
+        </template>
       </van-list>
     </div>
   </div>
@@ -66,9 +73,9 @@ export default {
         switch: 'switch4_1',
         unit: '',
         data: [
-          ['+', '正闪', '#9dc64e'],
-          ['-', '负闪', '#b81319'],
-          ['·', '云闪', '#e0d394'],
+          ['zs', '正闪', '#9dc64e'],
+          ['fs', '负闪', '#b81319'],
+          ['ys', '云闪', '#e0d394'],
         ]
       },
     ]
@@ -91,7 +98,10 @@ export default {
     return {
       content1List: content1List,
       content2List: content2List,
-      legendList: []
+      legendList: [],
+      zs: require('@/assets/img/mapMark/leidian/zs.png'),
+      fs: require('@/assets/img/mapMark/leidian/fs.png'),
+      ys: require('@/assets/img/mapMark/leidian/ys.png')
     }
   },
   created () {
@@ -110,7 +120,6 @@ export default {
   methods: {
     // 图例文字计算规则
     getRangeText (title, min, max) {
-      console.log(title)
       if (title !== '雷电') {
         const arr = []
         arr[0] = min === -999 ? '' : min
@@ -126,7 +135,7 @@ export default {
         }
         return arr.join('')
       } else {
-        return `${min} (${max})`
+        return `${max}`
       }
 
     }
@@ -155,6 +164,22 @@ export default {
         font-size: 12px;
         height: 16px;
         line-height: 16px;
+        white-space: nowrap;
+      }
+    }
+    .cs-cell2 {
+      align-items: center;
+      .van-cell__title {
+        align-items: center;
+        padding-left: 3px;
+      }
+      .van-cell__value {
+        display: flex;
+        align-items: center;
+      }
+      span {
+        height: 20px;
+        line-height: 20px;
       }
     }
   }
