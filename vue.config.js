@@ -13,9 +13,10 @@ module.exports = {
         }
       }
     },
-    disableHostCheck: true,
+    // 生产环境build用
     build: {
       assetsPublicPath: '/mobile'
-    }
+    },
+    disableHostCheck: true
   }
 }
