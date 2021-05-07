@@ -23,7 +23,7 @@ import 'leaflet/dist/leaflet.css'
 
 import echarts from 'echarts'
 
-import './mock'
+// import './mock'
 Vue.use(VueCesium, {
   cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
 })
