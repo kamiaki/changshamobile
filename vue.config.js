@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: process.env.ASSETS_PUBLIC_PATH,
   lintOnSave: false,
   devServer: {
     proxy: {
@@ -12,10 +12,6 @@ module.exports = {
           '^/changsha': '/changsha'
         }
       }
-    },
-    // 生产环境build用
-    build: {
-      assetsPublicPath: '/mobile'
     },
     disableHostCheck: true
   }
