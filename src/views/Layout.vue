@@ -43,13 +43,13 @@ export default {
           path: '/content2',
           icon: require('@/assets/img/tabbar/tab2_inactive.png'),
           icon_active: require('@/assets/img/tabbar/tab2_active.png')
-        },
-        {
-          name: '专项服务',
-          path: '/content3',
-          icon: require('@/assets/img/tabbar/tab3_inactive.png'),
-          icon_active: require('@/assets/img/tabbar/tab3_active.png')
         }
+        // ,{
+        //   name: '专项服务',
+        //   path: '/content3',
+        //   icon: require('@/assets/img/tabbar/tab3_inactive.png'),
+        //   icon_active: require('@/assets/img/tabbar/tab3_active.png')
+        // }
       ],
       active: 0
     }
